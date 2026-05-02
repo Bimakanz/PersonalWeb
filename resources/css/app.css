@@ -1,0 +1,113 @@
+@import "tailwindcss";
+
+/* ============================================
+   WINDOWS 98 SCROLLBAR — GLOBAL
+   ============================================ */
+
+/* Base size */
+::-webkit-scrollbar {
+    width: 17px;
+    height: 17px;
+}
+
+/* Track — fine 2×2 checkerboard gray pattern (compatible) */
+::-webkit-scrollbar-track {
+    background-color: #808080;
+    background-image: 
+        linear-gradient(45deg, #c0c0c0 25%, transparent 25%, transparent 75%, #c0c0c0 75%),
+        linear-gradient(45deg, #c0c0c0 25%, transparent 25%, transparent 75%, #c0c0c0 75%);
+    background-size: 4px 4px;
+    background-position: 0 0, 2px 2px;
+}
+
+/* Thumb */
+::-webkit-scrollbar-thumb {
+    background-color: #c0c0c0;
+    border: 0;
+    box-shadow:
+        inset 1px 1px 0 0 #ffffff,
+        inset -1px -1px 0 0 #404040,
+        inset 2px 2px 0 0 #dfdfdf,
+        inset -2px -2px 0 0 #808080;
+    min-height: 20px;
+    min-width: 20px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background-color: #c0c0c0;
+}
+
+::-webkit-scrollbar-thumb:active {
+    background-color: #c0c0c0;
+    box-shadow:
+        inset 1px 1px 0 0 #ffffff,
+        inset -1px -1px 0 0 #404040,
+        inset 2px 2px 0 0 #dfdfdf,
+        inset -2px -2px 0 0 #808080;
+}
+
+/* Corner */
+::-webkit-scrollbar-corner {
+    background-color: #c0c0c0;
+}
+
+/* Arrow buttons — base */
+::-webkit-scrollbar-button {
+    background-color: #c0c0c0;
+    box-shadow:
+        inset 1px 1px 0 0 #ffffff,
+        inset -1px -1px 0 0 #404040,
+        inset 2px 2px 0 0 #dfdfdf,
+        inset -2px -2px 0 0 #808080;
+    width: 17px;
+    height: 17px;
+    display: block;
+}
+
+::-webkit-scrollbar-button:active {
+    box-shadow:
+        inset 1px 1px 0 0 #404040,
+        inset -1px -1px 0 0 #ffffff,
+        inset 2px 2px 0 0 #808080,
+        inset -2px -2px 0 0 #dfdfdf;
+}
+
+/* ▲ Scroll UP */
+::-webkit-scrollbar-button:vertical:decrement {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='17' height='17'%3E%3Cpolygon points='8.5,4 14,13 3,13' fill='%23000000'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 17px 17px;
+}
+
+/* ▼ Scroll DOWN */
+::-webkit-scrollbar-button:vertical:increment {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='17' height='17'%3E%3Cpolygon points='8.5,13 14,4 3,4' fill='%23000000'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 17px 17px;
+}
+
+/* ◀ Scroll LEFT */
+::-webkit-scrollbar-button:horizontal:decrement {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='17' height='17'%3E%3Cpolygon points='4,8.5 13,3 13,14' fill='%23000000'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 17px 17px;
+}
+
+/* ▶ Scroll RIGHT */
+::-webkit-scrollbar-button:horizontal:increment {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='17' height='17'%3E%3Cpolygon points='13,8.5 4,3 4,14' fill='%23000000'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 17px 17px;
+}
+
+/* Hide double-buttons (some browsers render extra) */
+::-webkit-scrollbar-button:vertical:start:increment,
+::-webkit-scrollbar-button:vertical:end:decrement,
+::-webkit-scrollbar-button:horizontal:start:increment,
+::-webkit-scrollbar-button:horizontal:end:decrement {
+    display: none;
+}
