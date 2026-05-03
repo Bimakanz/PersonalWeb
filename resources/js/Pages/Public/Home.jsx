@@ -12,11 +12,11 @@ const BIOS_LINES = [
     'ATAPI CD-ROM: VMware Virtual IDECDROM Drive',
     'Initializing',
     'User: unknown',
-    'IP: 180.251.183.175',
+    'IP: 180.267.41.676',
     'System: Windows 10',
     '',
     'Use the ↑(Up) and ↓(Down) key to move the pointer to desired boot device.',
-    'Press (Enter) to attempt to boot or ESC to cancel.',
+    'Press (Enter) to attempt to boot',
 ];
 
 const MENU_OPTIONS = [
@@ -69,8 +69,11 @@ function BiosScreen({ onBoot }) {
     }, [selected, showMenu, onBoot]);
 
     return (
-        <div className="h-screen bg-black text-white font-mono p-6 flex flex-col text-sm md:text-base overflow-hidden">
+        <div className="h-screen bg-black text-white font-mono p-6 flex flex-col text-sm md:text-base overflow-hidden relative">
             {/* Top Right Exit Info */}
+            <div className="absolute top-6 right-6 text-gray-500 text-xs italic tracking-wide animate-pulse">
+                Fullscreen for best Performance
+            </div>
 
             {/* Animated BIOS Lines */}
             <div className={showMenu ? "mb-6" : ""}>
@@ -122,15 +125,15 @@ function BiosScreen({ onBoot }) {
                         }
                         `}
                     </style>
-                    <div className="mt-8 font-bold whitespace-pre rgb-text">
+                    <div className="mt-8 font-bold whitespace-pre rgb-text scale-75 md:scale-100 origin-top-left">
                         <pre>
 {`
-███████╗██╗  ██╗███╗   ██╗ █████╗     ██████╗ ███████╗██╗   ██╗
-██╔════╝╚██╗██╔╝████╗  ██║██╔══██╗    ██╔══██╗██╔════╝██║   ██║
-███████╗ ╚███╔╝ ██╔██╗ ██║███████║    ██║  ██║█████╗  ██║   ██║
-╚════██║ ██╔██╗ ██║╚██╗██║██╔══██║    ██║  ██║██╔══╝  ╚██╗ ██╔╝
-███████║██╔╝ ██╗██║ ╚████║██║  ██║    ██████╔╝███████╗ ╚████╔╝ 
-╚══════╝╚═╝  ╚═╝╚═╝  ╚═══╝╚═╝  ╚═╝    ╚═════╝ ╚══════╝  ╚═══╝  
+███████╗██╗  ██╗███╗   ██╗ █████╗ ██╗███████╗    ███████╗██████╗  █████╗  ██████╗███████╗
+██╔════╝╚██╗██╔╝████╗  ██║██╔══██╗╚═╝██╔════╝    ██╔════╝██╔══██╗██╔══██╗██╔════╝██╔════╝
+███████╗ ╚███╔╝ ██╔██╗ ██║███████║   ███████╗    ███████╗██████╔╝███████║██║     █████╗  
+╚════██║ ██╔██╗ ██║╚██╗██║██╔══██║   ╚════██║    ╚════██║██╔═══╝ ██╔══██║██║     ██╔══╝  
+███████║██╔╝ ██╗██║ ╚████║██║  ██║   ███████║    ███████║██║     ██║  ██║╚██████╗███████╗
+╚══════╝╚═╝  ╚═╝╚═╝  ╚═══╝╚═╝  ╚═╝   ╚══════╝    ╚══════╝╚═╝     ╚═╝  ╚═╝ ╚═════╝╚══════╝
 `}
                         </pre>
                     </div>
@@ -450,6 +453,7 @@ function MessageBoardContent({ initialMessages = [] }) {
         admin_reply: m.admin_reply
     })));
     const [imagePreview, setImagePreview] = useState(null);
+    const [modalImage, setModalImage] = useState(null);
     const fileInputRef = useRef(null);
     const endOfMessagesRef = useRef(null);
     
@@ -503,6 +507,16 @@ function MessageBoardContent({ initialMessages = [] }) {
     
     return (
         <div className="relative flex flex-col h-full bg-[#1a1a1a] text-white p-2" style={{ fontFamily: 'Tahoma, sans-serif' }}>
+            {/* Fullscreen Image Modal */}
+            {modalImage && (
+                <div className="fixed inset-0 z-[9999] bg-black/80 flex items-center justify-center p-8 backdrop-blur-sm" onClick={() => setModalImage(null)}>
+                    <img src={modalImage} alt="Expanded view" className="max-w-full max-h-full object-contain shadow-[0_0_20px_rgba(0,0,0,0.8)]" />
+                    <button className="absolute top-6 right-6 w-8 h-8 bg-[#c0c0c0] border-t-2 border-l-2 border-t-white border-l-white border-r-2 border-b-2 border-r-[#808080] border-b-[#808080] text-black font-bold text-lg flex items-center justify-center active:border-t-[#808080] active:border-l-[#808080] active:border-r-white active:border-b-white outline-none" onClick={() => setModalImage(null)}>
+                        X
+                    </button>
+                </div>
+            )}
+
             {/* The Chat Area (Blurred if not joined) */}
             <div className={`flex flex-col h-full transition-all duration-300 ${!joined ? 'blur-sm opacity-60 select-none pointer-events-none' : ''}`}>
                 <div className="flex-1 overflow-auto mb-2 text-sm flex flex-col gap-3 p-1">
@@ -518,13 +532,13 @@ function MessageBoardContent({ initialMessages = [] }) {
                                 <img 
                                     src={msg.image} 
                                     alt="uploaded" 
-                                    className="mt-1 max-w-[200px] max-h-[150px] object-contain border border-[#333] cursor-pointer"
-                                    onClick={() => window.open(msg.image, '_blank')}
+                                    className="mt-1 max-w-[200px] max-h-[150px] object-contain border border-[#333] cursor-pointer hover:border-[#666] transition-colors"
+                                    onClick={() => setModalImage(msg.image)}
                                 />
                             )}
                             {msg.admin_reply && (
                                 <div className="mt-2 ml-4 border-l-2 border-[#555] pl-2">
-                                    <span className="text-[#888] font-bold italic text-[11px]">↳ Replied to {msg.sender}:</span>
+                                    <span className="text-[#888] font-bold italic text-[11px]">↳ Sxna Replied to {msg.sender} :</span>
                                     <div className="text-gray-300 mt-0.5 text-xs">{msg.admin_reply}</div>
                                 </div>
                             )}
@@ -717,10 +731,23 @@ function VideoPlayerContent({ videos = [] }) {
 
     const skipToNext = () => {
         setShowSkipInfo(false);
-        setCurrentIndex(i => (i + 1) % Math.max(videos.length, 1));
+        if (videos.length <= 1) {
+            // Force replay if there's only 1 video
+            if (embed.type === 'direct' && videoRef.current) {
+                videoRef.current.currentTime = 0;
+                videoRef.current.play().catch(() => {});
+            } else {
+                // For iframe, forcing a re-render by briefly setting index to -1 and back to 0
+                setCurrentIndex(-1);
+                setTimeout(() => setCurrentIndex(0), 10);
+            }
+        } else {
+            setCurrentIndex(i => (i + 1) % Math.max(videos.length, 1));
+        }
     };
 
     useEffect(() => {
+        if (currentIndex === -1) return;
         if (embed.type === 'direct' && videoRef.current) {
             videoRef.current.volume = volume;
             videoRef.current.play().catch(() => {});
@@ -736,7 +763,7 @@ function VideoPlayerContent({ videos = [] }) {
     }
 
     const getEmbedUrl = () => {
-        if (embed.type === 'youtube') return `https://www.youtube.com/embed/${embed.id}?autoplay=1&mute=0&controls=0&disablekb=1&rel=0&modestbranding=1`;
+        if (embed.type === 'youtube') return `https://www.youtube.com/embed/${embed.id}?autoplay=1&mute=0&controls=0&disablekb=1&rel=0&modestbranding=1&playsinline=1&iv_load_policy=3`;
         if (embed.type === 'tiktok')  return `https://www.tiktok.com/embed/v2/${embed.id}`;
         return null;
     };
@@ -789,8 +816,20 @@ function VideoPlayerContent({ videos = [] }) {
                     />
                 )}
                 {(embed.type === 'youtube' || embed.type === 'tiktok') && embedUrl && (
-                    <div className="relative w-full h-full">
-                        <iframe key={embedUrl} src={embedUrl} className="w-full h-full border-0" allow="autoplay; encrypted-media" allowFullScreen={false} />
+                    <div className="absolute inset-0 flex items-center justify-center overflow-hidden">
+                        <iframe 
+                            key={embedUrl} 
+                            src={embedUrl} 
+                            className="absolute pointer-events-none border-0" 
+                            style={{ 
+                                width: embed.type === 'youtube' ? '150%' : '100%', 
+                                height: embed.type === 'youtube' ? 'auto' : '100%',
+                                aspectRatio: embed.type === 'youtube' ? '16/9' : 'auto',
+                                transform: embed.type === 'youtube' ? 'scale(1.35)' : 'none' 
+                            }}
+                            allow="autoplay; encrypted-media" 
+                            allowFullScreen={false} 
+                        />
                         <div className="absolute inset-0 z-10 cursor-pointer" onClick={skipToNext} title="Click to skip" />
                     </div>
                 )}
@@ -1168,35 +1207,42 @@ function Desktop({ chatMessages, projects = [], videos = [], wallpaperFolders = 
             {/* Desktop Area */}
             <div className="flex-1 p-4 relative h-[calc(100vh-2rem)] overflow-hidden z-10">
                 {/* Desktop Icons */}
-                <div className="absolute top-4 left-4 flex flex-col gap-3 w-24 z-0">
-                    <button onClick={() => openWindow('about_me', 'Notepad', true)} className="flex flex-col items-center gap-0 group outline-none">
-                        <img src="https://xque.dev/globe.gif" alt="About" className="w-40 h-20 drop-shadow-md group-hover:brightness-110" />
-                        <span className="text-white text-xs bg-transparent px-1 group-hover:bg-[#000080] group-hover:text-white border border-transparent group-hover:border-dotted group-hover:border-white text-center drop-shadow-md">About</span>
-                    </button>
-                    <button onClick={() => openWindow('message_board', 'Message Board', true)} className="flex flex-col items-center gap-0 group outline-none">
-                        <img src="https://xque.dev/chat.webp" alt="Message Board" className="w-40 h-20 drop-shadow-md group-hover:brightness-110" />
-                        <span className="text-white text-xs bg-transparent px-1 group-hover:bg-[#000080] group-hover:text-white border border-transparent group-hover:border-dotted group-hover:border-white text-center drop-shadow-md">Message Board</span>
-                    </button>
-                    <button onClick={() => openWindow('video_player', '.Video', true)} className="flex flex-col items-center gap-0 group outline-none">
-                        <img src="https://xque.dev/disk.png" alt="Video" className="w-40 h-20 drop-shadow-md group-hover:brightness-110 object-contain" style={{ imageRendering: 'pixelated' }} />
-                        <span className="text-white text-xs bg-transparent px-1 group-hover:bg-[#000080] group-hover:text-white border border-transparent group-hover:border-dotted group-hover:border-white text-center drop-shadow-md">Video</span>
-                    </button>
-                    <button onClick={() => openWindow('wallpaper_engine', 'Wallpaper Engine', true)} className="flex flex-col items-center gap-0 group outline-none">
-                        <img src="https://xque.dev/window.png" alt="Wallpaper" className="w-40 h-20 drop-shadow-md group-hover:brightness-110 object-contain" style={{ imageRendering: 'pixelated' }} />
-                        <span className="text-white text-xs bg-transparent px-1 group-hover:bg-[#000080] group-hover:text-white border border-transparent group-hover:border-dotted group-hover:border-white text-center drop-shadow-md">Wallpaper</span>
-                    </button>
-                    <button onClick={() => openWindow('contact', 'Contact', false)} className="flex flex-col items-center gap-0 group outline-none">
-                        <img src="https://xque.dev/mail.png" alt="Contact" className="w-40 h-20  drop-shadow-md group-hover:brightness-110 object-contain" style={{ imageRendering: 'pixelated' }} />
-                        <span className="text-white text-xs bg-transparent px-1 group-hover:bg-[#000080] group-hover:text-white border border-transparent group-hover:border-dotted group-hover:border-white text-center drop-shadow-md">Contact</span>
-                    </button>
-                    <button onClick={() => openWindow('shows', 'Shows', true)} className="flex flex-col items-center gap-0 group outline-none">
-                        <img src="https://xque.dev/anime.png" alt="Shows" className="w-40 h-20 drop-shadow-md group-hover:brightness-110 object-contain" style={{ imageRendering: 'pixelated' }} />
-                        <span className="text-white text-xs bg-transparent px-1 group-hover:bg-[#000080] group-hover:text-white border border-transparent group-hover:border-dotted group-hover:border-white text-center drop-shadow-md">Shows</span>
-                    </button>
-                    <button onClick={() => openWindow('bio', 'Bio', false)} className="flex flex-col items-center gap-0 group outline-none">
-                        <img src="https://xque.dev/redacted.png" alt="Bio" className="w-40 h-20 drop-shadow-md group-hover:brightness-110 object-contain" style={{ imageRendering: 'pixelated' }} />
-                        <span className="text-white text-xs bg-transparent px-1 group-hover:bg-[#000080] group-hover:text-white border border-transparent group-hover:border-dotted group-hover:border-white text-center drop-shadow-md">Bio</span>
-                    </button>
+                <div className="absolute top-4 left-4 flex gap-4 z-0">
+                    {/* First Column */}
+                    <div className="flex flex-col gap-3 w-24">
+                        <button onClick={() => openWindow('about_me', 'Notepad', true)} className="flex flex-col items-center gap-0 group outline-none">
+                            <img src="https://xque.dev/globe.gif" alt="About" className="w-40 h-20 drop-shadow-md group-hover:brightness-110" />
+                            <span className="text-white text-xs bg-transparent px-1 group-hover:bg-[#000080] group-hover:text-white border border-transparent group-hover:border-dotted group-hover:border-white text-center drop-shadow-md">About</span>
+                        </button>
+                        <button onClick={() => openWindow('message_board', 'Message Board', true)} className="flex flex-col items-center gap-0 group outline-none">
+                            <img src="https://xque.dev/chat.webp" alt="Message Board" className="w-40 h-20 drop-shadow-md group-hover:brightness-110" />
+                            <span className="text-white text-xs bg-transparent px-1 group-hover:bg-[#000080] group-hover:text-white border border-transparent group-hover:border-dotted group-hover:border-white text-center drop-shadow-md">Message Board</span>
+                        </button>
+                        <button onClick={() => openWindow('video_player', '.Video', true)} className="flex flex-col items-center gap-0 group outline-none">
+                            <img src="https://xque.dev/disk.png" alt="Video" className="w-40 h-20 drop-shadow-md group-hover:brightness-110 object-contain" style={{ imageRendering: 'pixelated' }} />
+                            <span className="text-white text-xs bg-transparent px-1 group-hover:bg-[#000080] group-hover:text-white border border-transparent group-hover:border-dotted group-hover:border-white text-center drop-shadow-md">Video</span>
+                        </button>
+                        <button onClick={() => openWindow('wallpaper_engine', 'Wallpaper Engine', true)} className="flex flex-col items-center gap-0 group outline-none">
+                            <img src="https://xque.dev/window.png" alt="Wallpaper" className="w-40 h-20 drop-shadow-md group-hover:brightness-110 object-contain" style={{ imageRendering: 'pixelated' }} />
+                            <span className="text-white text-xs bg-transparent px-1 group-hover:bg-[#000080] group-hover:text-white border border-transparent group-hover:border-dotted group-hover:border-white text-center drop-shadow-md">Wallpaper</span>
+                        </button>
+                        <button onClick={() => openWindow('contact', 'Contact', false)} className="flex flex-col items-center gap-0 group outline-none">
+                            <img src="https://xque.dev/mail.png" alt="Contact" className="w-40 h-20  drop-shadow-md group-hover:brightness-110 object-contain" style={{ imageRendering: 'pixelated' }} />
+                            <span className="text-white text-xs bg-transparent px-1 group-hover:bg-[#000080] group-hover:text-white border border-transparent group-hover:border-dotted group-hover:border-white text-center drop-shadow-md">Contact</span>
+                        </button>
+                        <button onClick={() => openWindow('shows', 'Shows', true)} className="flex flex-col items-center gap-0 group outline-none">
+                            <img src="https://xque.dev/anime.png" alt="Shows" className="w-40 h-20 drop-shadow-md group-hover:brightness-110 object-contain" style={{ imageRendering: 'pixelated' }} />
+                            <span className="text-white text-xs bg-transparent px-1 group-hover:bg-[#000080] group-hover:text-white border border-transparent group-hover:border-dotted group-hover:border-white text-center drop-shadow-md">Shows</span>
+                        </button>
+                    </div>
+
+                    {/* Second Column */}
+                    <div className="flex flex-col gap-3 w-24">
+                        <button onClick={() => openWindow('bio', 'Bio', false)} className="flex flex-col items-center gap-0 group outline-none">
+                            <img src="https://xque.dev/redacted.png" alt="Bio" className="w-40 h-20 drop-shadow-md group-hover:brightness-110 object-contain" style={{ imageRendering: 'pixelated' }} />
+                            <span className="text-white text-xs bg-transparent px-1 group-hover:bg-[#000080] group-hover:text-white border border-transparent group-hover:border-dotted group-hover:border-white text-center drop-shadow-md">Bio</span>
+                        </button>
+                    </div>
                 </div>
 
                 {/* Windows */}

@@ -36,7 +36,7 @@ export default function VideosIndex({ videos }) {
     const [detailVideo, setDetailVideo] = useState(null);
 
     const { data, setData, post, processing, reset, errors } = useForm({
-        title: '', url: '', file: null, sort_order: 0,
+        title: '', url: '', file: null,
     });
 
     const handleFileChange = (e) => {
@@ -63,16 +63,25 @@ export default function VideosIndex({ videos }) {
         return m ? `https://www.youtube.com/embed/${m[1]}?autoplay=0` : null;
     };
 
+    const getTikTokEmbed = (src) => {
+        const m = src?.match(/video\/(\d+)/);
+        return m ? `https://www.tiktok.com/embed/v2/${m[1]}` : null;
+    };
+
     const renderPreview = (v) => {
         const type = detectVideoType(v.src);
         if (type === 'youtube') {
             const url = getYouTubeEmbed(v.src);
             return url ? <iframe src={url} className="w-full h-48 border-0 bg-black" allowFullScreen /> : null;
         }
+        if (type === 'tiktok') {
+            const url = getTikTokEmbed(v.src);
+            return url ? <iframe src={url} className="w-full h-96 border-0 bg-black" allowFullScreen /> : <div className="w-full h-24 bg-[#808080] flex items-center justify-center text-sm text-gray-700">Invalid TikTok URL format</div>;
+        }
         if (type === 'direct') {
             return <video src={v.src} controls className="w-full max-h-48 bg-black" />;
         }
-        return <div className="w-full h-24 bg-[#808080] flex items-center justify-center text-sm text-gray-700">TikTok — preview not available</div>;
+        return <div className="w-full h-24 bg-[#808080] flex items-center justify-center text-sm text-gray-700">Preview not available</div>;
     };
 
     return (
@@ -95,10 +104,6 @@ export default function VideosIndex({ videos }) {
                                 <Label>Title *</Label>
                                 <Win98Input type="text" placeholder="Video title" value={data.title} onChange={e => setData('title', e.target.value)} className="w-full" />
                                 {errors.title && <p className="text-red-700 text-xs">{errors.title}</p>}
-                            </div>
-                            <div className="flex flex-col gap-1 w-20">
-                                <Label>Order</Label>
-                                <Win98Input type="number" value={data.sort_order} onChange={e => setData('sort_order', e.target.value)} className="w-full" />
                             </div>
                         </div>
 

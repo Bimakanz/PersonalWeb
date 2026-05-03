@@ -105,7 +105,7 @@ export default function AuthenticatedLayout({ header, children }) {
                         <span className="text-white text-xs bg-transparent px-1 group-hover:bg-[#000080] group-hover:text-white border border-transparent group-hover:border-dotted group-hover:border-white text-center drop-shadow-md">Wallpapers</span>
                     </Link>
                     <Link href={route('admin.shows.index')} className="flex flex-col items-center gap-1 group">
-                        <img src="https://xque.dev/popcorn.png" alt="Shows" className="w-10 h-10 group-hover:brightness-110 group-active:brightness-75 drop-shadow-md" style={{ imageRendering: 'pixelated' }} />
+                        <img src="https://cdn-icons-png.flaticon.com/512/3418/3418886.png" alt="Shows" className="w-10 h-10 group-hover:brightness-110 group-active:brightness-75 drop-shadow-md" style={{ imageRendering: 'pixelated' }} />
                         <span className="text-white text-xs bg-transparent px-1 group-hover:bg-[#000080] group-hover:text-white border border-transparent group-hover:border-dotted group-hover:border-white text-center drop-shadow-md">Shows</span>
                     </Link>
                 </div>

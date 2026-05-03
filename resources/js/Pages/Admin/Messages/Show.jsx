@@ -105,7 +105,7 @@ export default function Show({ message }) {
                                         disabled={processing}
                                         className="px-6 py-1 bg-[#c0c0c0] border-2 border-t-white border-l-white border-r-[#808080] border-b-[#808080] active:border-t-[#808080] active:border-l-[#808080] active:border-r-white active:border-b-white font-bold text-sm outline-none shadow-[1px_1px_0_#000] disabled:opacity-50"
                                     >
-                                        {processing ? 'Saving...' : 'Save Reply'}
+                                        {processing ? 'Sending...' : 'Send Reply'}
                                     </button>
                                 </div>
                             </form>

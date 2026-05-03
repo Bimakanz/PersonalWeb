@@ -50,6 +50,6 @@ class MessageController extends Controller
             'admin_reply' => $request->admin_reply,
         ]);
 
-        return redirect()->back()->with('success', 'Reply saved successfully.');
+        return redirect()->route('messages.show', $message->id)->with('success', 'Reply saved successfully.');
     }
 }

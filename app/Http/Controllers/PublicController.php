@@ -14,11 +14,11 @@ class PublicController extends Controller
         $messages = \App\Models\Message::orderBy('created_at', 'asc')
             ->latest()
             ->limit(100)
-            ->get(['id', 'name', 'message', 'image_path', 'created_at'])
+            ->get(['id', 'name', 'message', 'image_path', 'admin_reply', 'created_at'])
             ->sortBy('created_at')
             ->values();
 
-        $videos = \App\Models\Video::orderBy('sort_order')->orderBy('created_at')->get()->map(function ($v) {
+        $videos = \App\Models\Video::orderBy('created_at', 'desc')->get()->map(function ($v) {
             return [
                 'id'    => $v->id,
                 'title' => $v->title,
@@ -75,12 +75,56 @@ class PublicController extends Controller
             $imagePath = $request->file('image')->store('chat-images', 'public');
         }
 
-        \App\Models\Message::create([
+        $messageModel = \App\Models\Message::create([
             'name'       => $validated['name'],
             'email'      => $validated['email'],
             'message'    => $validated['message'] ?? '',
             'image_path' => $imagePath,
         ]);
+
+        // Send to Discord Webhook
+        if (env('DISCORD_WEBHOOK_URL')) {
+            try {
+                $messageText = !empty($validated['message']) ? $validated['message'] : '*No message text provided*';
+                
+                // Reduced line break: 1 \n after New Message
+                $description = "**Sender**\n{$validated['name']}\n\n**New Message**\n\"{$messageText}\"";
+
+                $embed = [
+                    'description' => $description,
+                    'color'       => hexdec('00b0f4'), // Windows 95 blue
+                    'footer'      => [
+                        'text' => "Sxna's Space"
+                    ],
+                    'timestamp'   => now()->toIso8601String(),
+                ];
+
+                $data = [
+                    'embeds'  => [$embed]
+                ];
+                
+                if ($imagePath) {
+                    $fullPath = storage_path('app/public/' . $imagePath);
+                    if (file_exists($fullPath)) {
+                        $filename = basename($fullPath);
+                        // Tell Discord to use the attached file as the embed image
+                        $data['embeds'][0]['image'] = ['url' => 'attachment://' . $filename];
+                        
+                        \Illuminate\Support\Facades\Http::attach(
+                            'file', file_get_contents($fullPath), $filename
+                        )->post(env('DISCORD_WEBHOOK_URL'), [
+                            'payload_json' => json_encode($data)
+                        ]);
+                    } else {
+                        \Illuminate\Support\Facades\Http::post(env('DISCORD_WEBHOOK_URL'), $data);
+                    }
+                } else {
+                    \Illuminate\Support\Facades\Http::post(env('DISCORD_WEBHOOK_URL'), $data);
+                }
+            } catch (\Exception $e) {
+                \Illuminate\Support\Facades\Log::error('Discord Webhook Error: ' . $e->getMessage());
+            }
+        }
 
         return redirect()->back()->with('success', 'Message sent!');
     }

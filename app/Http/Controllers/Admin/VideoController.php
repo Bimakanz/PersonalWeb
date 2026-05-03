@@ -12,7 +12,7 @@ class VideoController extends Controller
     public function index()
     {
         return Inertia::render('Admin/Videos/Index', [
-            'videos' => Video::orderBy('sort_order')->orderBy('created_at', 'desc')->get(),
+            'videos' => Video::orderBy('created_at', 'desc')->get(),
         ]);
     }
 
@@ -33,7 +33,6 @@ class VideoController extends Controller
             'title'      => $request->title,
             'file_path'  => $filePath,
             'url'        => $request->url,
-            'sort_order' => $request->sort_order ?? 0,
         ]);
 
         return redirect()->route('admin.videos.index')->with('success', 'Video added.');
