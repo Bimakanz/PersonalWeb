@@ -58,10 +58,7 @@ function BiosScreen({ onBoot }) {
                 setSelected((s) => Math.min(MENU_OPTIONS.length - 1, s + 1));
             }
             if (e.key === 'Enter') {
-                // Only boot if the first option is selected
-                if (selected === 0) {
-                    onBoot();
-                }
+                if (selected === 0) onBoot();
             }
         };
         window.addEventListener('keydown', handleKey);
@@ -71,7 +68,7 @@ function BiosScreen({ onBoot }) {
     return (
         <div className="h-screen bg-black text-white font-mono p-6 flex flex-col text-sm md:text-base overflow-hidden relative">
             {/* Top Right Exit Info */}
-            <div className="absolute top-6 right-6 text-gray-500 text-xs italic tracking-wide animate-pulse">
+            <div className="hidden md:block absolute top-6 right-6 text-gray-500 text-xs italic tracking-wide animate-pulse">
                 Fullscreen for best Performance
             </div>
 
@@ -98,7 +95,12 @@ function BiosScreen({ onBoot }) {
                                     return (
                                         <div
                                             key={opt.label}
-                                            className={`inline-block px-2 ${isSelected ? 'bg-gray-200 text-black' : 'text-gray-300'}`}
+                                            onClick={() => onBoot()}
+                                            onTouchEnd={(e) => {
+                                                e.preventDefault();
+                                                onBoot();
+                                            }}
+                                            className={`inline-block cursor-pointer ${isSelected ? 'bg-gray-200 text-black' : 'text-gray-300'}`}
                                         >
                                             {opt.label}
                                         </div>
@@ -125,7 +127,7 @@ function BiosScreen({ onBoot }) {
                         }
                         `}
                     </style>
-                    <div className="mt-8 font-bold whitespace-pre rgb-text scale-75 md:scale-100 origin-top-left">
+                    <div className="mt-8 md:mt-12 font-bold whitespace-pre rgb-text scale-[0.4] sm:scale-50 md:scale-100 origin-top-left -ml-2 md:ml-0 w-max max-w-none">
                         <pre>
 {`
 ███████╗██╗  ██╗███╗   ██╗ █████╗ ██╗███████╗    ███████╗██████╗  █████╗  ██████╗███████╗
@@ -147,6 +149,12 @@ function Window({ id, title, children, onClose, onMinimize, onFocus, minimized, 
     const [pos, setPos] = useState(initialPos || { x: 100, y: 80 });
     const [dragging, setDragging] = useState(false);
     const [rel, setRel] = useState({x: 0, y: 0});
+
+    useEffect(() => {
+        if (window.innerWidth < 768) {
+            setPos({ x: 0, y: 0 });
+        }
+    }, []);
 
     const onPointerDown = (e) => {
         setDragging(true);
@@ -174,7 +182,18 @@ function Window({ id, title, children, onClose, onMinimize, onFocus, minimized, 
             initial={{ scale: 0.9, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 0.9, opacity: 0 }}
-            style={{ left: pos.x, top: pos.y, position: 'absolute', zIndex: zIndex || 50, width, height, display: minimized ? 'none' : 'flex', flexDirection: 'column' }}
+            style={{ 
+                left: pos.x, 
+                top: pos.y, 
+                position: 'absolute', 
+                zIndex: zIndex || 50, 
+                width: width, 
+                maxWidth: '100%',
+                height: height, 
+                maxHeight: '100%',
+                display: minimized ? 'none' : 'flex', 
+                flexDirection: 'column' 
+            }}
             onPointerDownCapture={onFocus}
             className={`border-2 shadow-[2px_2px_0_#000] select-none ${darkTheme ? 'border-gray-500 bg-[#333b3a]' : 'border-t-white border-l-white border-r-[#808080] border-b-[#808080] bg-[#c0c0c0]'}`}
         >
@@ -966,7 +985,7 @@ function ShowsContent({ shows = [] }) {
     const selected = shows.find(s => s.id === selectedId) || filtered[0];
 
     return (
-        <div className="flex h-full bg-[#111] text-white select-none gap-2 p-1.5" style={{ fontFamily: '"MS Sans Serif", Tahoma, sans-serif' }}>
+        <div className="flex flex-col md:flex-row h-full bg-[#111] text-white select-none gap-2 p-1.5" style={{ fontFamily: '"MS Sans Serif", Tahoma, sans-serif' }}>
             
             {/* Fullscreen Image Modal */}
             {modalImage && (
@@ -979,7 +998,7 @@ function ShowsContent({ shows = [] }) {
             )}
 
             {/* Left Pane (Grid) */}
-            <div className="flex-[4] flex flex-col min-h-0 bg-black border-2 border-l-[#808080] border-t-[#808080] border-r-white border-b-white p-3">
+            <div className="flex-1 md:flex-[4] flex flex-col min-h-0 bg-black border-2 border-l-[#808080] border-t-[#808080] border-r-white border-b-white p-2 md:p-3">
                 {/* Tabs */}
                 <div className="flex gap-2 mb-4 shrink-0">
                     {ALL_TABS.map(t => {
@@ -999,7 +1018,7 @@ function ShowsContent({ shows = [] }) {
                 </div>
 
                 {/* Grid */}
-                <div className="flex-1 overflow-y-auto pr-2 custom-scrollbar grid grid-cols-2 gap-4 place-content-start">
+                <div className="flex-1 overflow-y-auto pr-2 custom-scrollbar grid grid-cols-2 gap-2 md:gap-4 place-content-start">
                     {filtered.length === 0 ? (
                         <div className="col-span-2 text-gray-500 italic text-center mt-10">No shows found.</div>
                     ) : filtered.map((show, idx) => (
@@ -1024,7 +1043,7 @@ function ShowsContent({ shows = [] }) {
             </div>
 
             {/* Right Pane (Details) */}
-            <div className="flex-[3] flex flex-col min-h-0 bg-black border-2 border-l-[#808080] border-t-[#808080] border-r-white border-b-white p-5 overflow-y-auto custom-scrollbar">
+            <div className="flex-1 md:flex-[3] flex flex-col min-h-0 bg-black border-2 border-l-[#808080] border-t-[#808080] border-r-white border-b-white p-3 md:p-5 overflow-y-auto custom-scrollbar">
                 {selected ? (
                     <>
                         <h2 className="text-2xl font-bold mb-4 tracking-wide">
@@ -1100,10 +1119,15 @@ function BioContent() {
 
 
 function Desktop({ chatMessages, projects = [], videos = [], wallpaperFolders = [], shows = [], onShutdown }) {
-    const [openWindows, setOpenWindows] = useState([
-        { id: 'about_me', title: 'Notepad', pos: { x: 700, y: 60 }, isDark: true, minimized: false, zIndex: 60 },
-        { id: 'message_board', title: 'Message Board', pos: { x: 600, y: 150 }, isDark: true, minimized: false, zIndex: 51, height: 650 }
-    ]);
+    const [openWindows, setOpenWindows] = useState(() => {
+        const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
+        return isMobile ? [
+            { id: 'about_me', title: 'Notepad', pos: { x: 0, y: 0 }, isDark: true, minimized: false, zIndex: 60 }
+        ] : [
+            { id: 'about_me', title: 'Notepad', pos: { x: 700, y: 60 }, isDark: true, minimized: false, zIndex: 60 },
+            { id: 'message_board', title: 'Message Board', pos: { x: 600, y: 150 }, isDark: true, minimized: false, zIndex: 51, height: 650 }
+        ];
+    });
     const [topZIndex, setTopZIndex] = useState(51);
     const [time, setTime] = useState(new Date());
     const [isStartMenuOpen, setIsStartMenuOpen] = useState(false);
@@ -1353,30 +1377,30 @@ function Windows95Loading({ onComplete }) {
             {/* Top Right Exit Info */}
 
             {/* Logo area */}
-            <div className="flex flex-col items-center z-10 scale-110 md:scale-125">
-                <div className="flex items-end mb-10">
+            <div className="flex flex-col items-center z-10">
+                <div className="flex flex-col sm:flex-row items-center sm:items-end mb-8 md:mb-10">
                     {/* Authentic wavy Windows Logo */}
-                    <div className="grid grid-cols-2 gap-[3px] mr-6 w-14 h-14 transform -skew-y-[10deg] drop-shadow-[0_0_10px_rgba(255,255,255,0.2)]">
+                    <div className="grid grid-cols-2 gap-[2px] md:gap-[3px] sm:mr-6 mb-4 sm:mb-0 w-12 h-12 md:w-16 md:h-16 transform -skew-y-[10deg] drop-shadow-[0_0_10px_rgba(255,255,255,0.2)]">
                         <div className="bg-[#f05129] rounded-tl-sm shadow-[inset_1px_1px_0_rgba(255,255,255,0.4)]"></div>
                         <div className="bg-[#7fba00] rounded-tr-sm shadow-[inset_1px_1px_0_rgba(255,255,255,0.4)]"></div>
                         <div className="bg-[#00a4ef] rounded-bl-sm shadow-[inset_1px_1px_0_rgba(255,255,255,0.4)]"></div>
                         <div className="bg-[#ffba00] rounded-br-sm shadow-[inset_1px_1px_0_rgba(255,255,255,0.4)]"></div>
                     </div>
-                    <div className="flex flex-col justify-end">
-                        <div className="text-gray-300 text-xl font-bold leading-none mb-1 tracking-wider" style={{ fontFamily: 'Arial, sans-serif' }}>Microsoft<sup className="text-sm">®</sup></div>
-                        <div className="text-white text-6xl md:text-7xl font-extrabold tracking-tighter leading-none" style={{ fontFamily: 'Arial, sans-serif' }}>Windows 95</div>
+                    <div className="flex flex-col items-center sm:items-start justify-end">
+                        <div className="text-gray-300 text-lg md:text-2xl font-bold leading-none mb-1 tracking-wider" style={{ fontFamily: 'Arial, sans-serif' }}>Microsoft<sup className="text-[10px] md:text-sm">®</sup></div>
+                        <div className="text-white text-5xl md:text-7xl font-extrabold tracking-tighter leading-none" style={{ fontFamily: 'Arial, sans-serif' }}>Windows 95</div>
                     </div>
                 </div>
 
                 {/* Highly authentic Loading Bar */}
-                <div className="w-72 h-6 p-[3px] relative overflow-hidden bg-black flex gap-1 shadow-[1px_1px_0_rgba(255,255,255,0.2)]"
+                <div className="w-56 md:w-72 h-5 md:h-6 p-[2px] md:p-[3px] relative overflow-hidden bg-black flex gap-1 shadow-[1px_1px_0_rgba(255,255,255,0.2)]"
                      style={{ border: '2px solid', borderTopColor: '#404040', borderLeftColor: '#404040', borderRightColor: '#ffffff', borderBottomColor: '#ffffff' }}
                 >
                     <motion.div 
                         initial={{ left: '-40%' }}
                         animate={{ left: '100%' }}
                         transition={{ repeat: Infinity, duration: 2.5, ease: "linear" }}
-                        className="absolute top-[3px] bottom-[3px] w-[40%] flex justify-between gap-1"
+                        className="absolute top-[2px] bottom-[2px] w-[40%] flex justify-between gap-1"
                     >
                         <div className="flex-1 h-full bg-[#0000a8] shadow-[inset_1px_1px_0_rgba(255,255,255,0.3)]"></div>
                         <div className="flex-1 h-full bg-[#0000a8] shadow-[inset_1px_1px_0_rgba(255,255,255,0.3)]"></div>
@@ -1386,11 +1410,13 @@ function Windows95Loading({ onComplete }) {
             </div>
 
             {/* Bottom Text */}
-            <div className="absolute bottom-10 left-10 text-gray-400 text-sm tracking-wide" style={{ fontFamily: 'Arial, sans-serif' }}>
-                Copyright © Microsoft Corporation
-            </div>
-            <div className="absolute bottom-10 right-10 text-gray-200 text-2xl font-bold italic tracking-wider" style={{ fontFamily: '"Times New Roman", Times, serif' }}>
-                Microsoft<sup className="text-sm">®</sup>
+            <div className="absolute bottom-6 md:bottom-10 left-0 right-0 flex justify-between px-4 md:px-10 items-end">
+                <div className="text-gray-400 text-[10px] md:text-sm tracking-wide max-w-[50%]" style={{ fontFamily: 'Arial, sans-serif' }}>
+                    Copyright © Microsoft Corporation
+                </div>
+                <div className="text-gray-200 text-lg md:text-2xl font-bold italic tracking-wider" style={{ fontFamily: '"Times New Roman", Times, serif' }}>
+                    Microsoft<sup className="text-[10px] md:text-sm">®</sup>
+                </div>
             </div>
         </div>
     );
@@ -1402,7 +1428,28 @@ function LoginScreen({ onLogin }) {
     // =========================================================================
     const ADMIN_AVATAR = "https://i.pinimg.com/originals/81/1d/25/811d255ce4eed0428b0b52b8ccb46c6f.gif";
     const GUEST_AVATAR = "https://i.pinimg.com/originals/c8/56/4a/c8564a53ab234f0ff5a4f6f5f92f9650.gif";
-    const LOGIN_BACKGROUND = "/images/osaka.png"; 
+    
+    const [bgData, setBgData] = useState(null);
+
+    useEffect(() => {
+        const rand = Math.random() * 100;
+        let selectedUrl = "";
+        let isRepeat = false;
+
+        if (rand < 50) {
+            selectedUrl = "https://i.pinimg.com/736x/12/e8/fc/12e8fcc8be3a42c50dcc79a24455e428.jpg"; // 50%
+        } else if (rand < 70) {
+            selectedUrl = "https://i.pinimg.com/736x/a5/47/91/a54791b2f500a6454fd17f8ab8d88adc.jpg"; // 20%
+        } else if (rand < 90) {
+            selectedUrl = "https://i.pinimg.com/originals/cb/e7/1b/cbe71bbc1a87f136fac57ed6001cbde0.gif"; // 20%
+            isRepeat = true;
+        } else {
+            selectedUrl = "https://i.pinimg.com/originals/78/b5/cc/78b5cc349c51859e0d5174ab5ce37c7a.gif"; // 10%
+            isRepeat = true;
+        }
+
+        setBgData({ url: selectedUrl, isRepeat });
+    }, []);
 
     // Konfigurasi Inertia Form untuk Admin
     const [selectedUser, setSelectedUser] = useState(null);
@@ -1423,39 +1470,47 @@ function LoginScreen({ onLogin }) {
              }}
         >
             {/* Background Image */}
-            {LOGIN_BACKGROUND ? (
-                <img src={LOGIN_BACKGROUND} alt="background" className="absolute inset-0 w-full h-full object-cover opacity-60" />
+            {bgData ? (
+                <div 
+                    className="absolute inset-0 w-full h-full opacity-60"
+                    style={{
+                        backgroundImage: `url(${bgData.url})`,
+                        backgroundSize: bgData.isRepeat ? 'auto' : 'cover',
+                        backgroundRepeat: bgData.isRepeat ? 'repeat' : 'no-repeat',
+                        backgroundPosition: 'center',
+                    }}
+                />
             ) : (
                 <div className="absolute inset-0 pointer-events-none opacity-50">
                     <div className="absolute -bottom-1/4 -right-1/4 w-[150%] h-[150%] rounded-full border-[100px] border-blue-500/10 blur-3xl transform rotate-12"></div>
                 </div>
             )}
 
-            <div className="flex flex-col md:flex-row gap-12 md:gap-24 z-10 transition-all duration-500">
+            <div className="flex flex-row gap-6 md:gap-24 z-10 transition-all duration-500">
                 {/* 1. TAMPILAN PILIH USER (Jika belum ada yang dipilih) */}
                 {!selectedUser && (
                     <>
                         {/* Guest User */}
                         {GUEST_AVATAR !== "" && (
                             <div className="flex flex-col items-center group cursor-pointer" onClick={onLogin}>
-                                <div className="w-24 h-24 rounded-xl border-[3px] border-white/20 group-hover:border-white transition-all overflow-hidden mb-3 shadow-[0_0_20px_rgba(255,255,255,0.1)] group-hover:shadow-[0_0_30px_rgba(255,255,255,0.4)] group-hover:scale-105 bg-gray-800">
+                                <div className="w-20 h-20 md:w-24 md:h-24 rounded-xl border-[3px] border-white/20 group-hover:border-white transition-all overflow-hidden mb-3 shadow-[0_0_20px_rgba(255,255,255,0.1)] group-hover:shadow-[0_0_30px_rgba(255,255,255,0.4)] group-hover:scale-105 bg-gray-800">
                                     <img src={GUEST_AVATAR} alt="Guest" className="w-full h-full object-cover" />
                                 </div>
-                                <div className="text-white text-lg tracking-wide" style={{ fontFamily: 'Tahoma, Arial, sans-serif', textShadow: '2px 2px 2px #000, 1px 1px 0px #000', WebkitFontSmoothing: 'none', fontSmooth: 'never' }}>Guest</div>
+                                <div className="text-white text-sm md:text-lg tracking-wide" style={{ fontFamily: 'Tahoma, Arial, sans-serif', textShadow: '2px 2px 2px #000, 1px 1px 0px #000', WebkitFontSmoothing: 'none', fontSmooth: 'never' }}>Guest</div>
                             </div>
                         )}
 
                         {/* Administrator User */}
                         {ADMIN_AVATAR !== "" && (
                             <div className="flex flex-col items-center group cursor-pointer" onClick={() => setSelectedUser('admin')}>
-                                <div className="w-24 h-24 rounded-xl border-[3px] border-white/20 group-hover:border-white transition-all overflow-hidden mb-3 shadow-[0_0_20px_rgba(255,255,255,0.1)] group-hover:shadow-[0_0_30px_rgba(255,255,255,0.4)] group-hover:scale-105 bg-gray-800">
+                                <div className="w-20 h-20 md:w-24 md:h-24 rounded-xl border-[3px] border-white/20 group-hover:border-white transition-all overflow-hidden mb-3 shadow-[0_0_20px_rgba(255,255,255,0.1)] group-hover:shadow-[0_0_30px_rgba(255,255,255,0.4)] group-hover:scale-105 bg-gray-800">
                                     {ADMIN_AVATAR.match(/\.(mp4|webm)$/i) ? (
                                         <video src={ADMIN_AVATAR} autoPlay loop muted playsInline className="w-full h-full object-cover" />
                                     ) : (
                                         <img src={ADMIN_AVATAR} alt="Administrator" className="w-full h-full object-cover" />
                                     )}
                                 </div>
-                                <div className="text-white text-lg tracking-wide" style={{ fontFamily: 'Tahoma, Arial, sans-serif', textShadow: '2px 2px 2px #000, 1px 1px 0px #000', WebkitFontSmoothing: 'none', fontSmooth: 'never' }}>Administrator</div>
+                                <div className="text-white text-sm md:text-lg tracking-wide" style={{ fontFamily: 'Tahoma, Arial, sans-serif', textShadow: '2px 2px 2px #000, 1px 1px 0px #000', WebkitFontSmoothing: 'none', fontSmooth: 'never' }}>Administrator</div>
                             </div>
                         )}
                     </>

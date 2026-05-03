@@ -1,37 +1,23 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head } from '@inertiajs/react';
-import DeleteUserForm from './Partials/DeleteUserForm';
 import UpdatePasswordForm from './Partials/UpdatePasswordForm';
-import UpdateProfileInformationForm from './Partials/UpdateProfileInformationForm';
 
 export default function Edit({ mustVerifyEmail, status }) {
     return (
-        <AuthenticatedLayout
-            header={
-                <h2 className="text-xl font-semibold leading-tight text-gray-800 dark:text-gray-200">
-                    Profile
-                </h2>
-            }
-        >
-            <Head title="Profile" />
+        <AuthenticatedLayout header="Access Control">
+            <Head title="Access Control" />
 
-            <div className="py-12">
-                <div className="mx-auto max-w-7xl space-y-6 sm:px-6 lg:px-8">
-                    <div className="bg-white p-4 shadow sm:rounded-lg sm:p-8 dark:bg-gray-800">
-                        <UpdateProfileInformationForm
-                            mustVerifyEmail={mustVerifyEmail}
-                            status={status}
-                            className="max-w-xl"
-                        />
+            <div className="p-4 bg-[#c0c0c0] min-h-full">
+                <div className="max-w-xl border-t-2 border-l-2 border-t-white border-l-white border-r-2 border-b-2 border-r-[#808080] border-b-[#808080] p-4 bg-[#c0c0c0]">
+                    <div className="flex items-center gap-3 mb-4 pb-2 border-b border-[#808080]">
+                        <img src="https://win98icons.alexmeub.com/icons/png/keys-0.png" alt="Key" className="w-8 h-8" style={{ imageRendering: 'pixelated' }} />
+                        <div>
+                            <h2 className="text-black font-bold text-lg" style={{ fontFamily: 'Tahoma, sans-serif' }}>Security Settings</h2>
+                            <p className="text-black text-xs">Change your administrator password here.</p>
+                        </div>
                     </div>
 
-                    <div className="bg-white p-4 shadow sm:rounded-lg sm:p-8 dark:bg-gray-800">
-                        <UpdatePasswordForm className="max-w-xl" />
-                    </div>
-
-                    <div className="bg-white p-4 shadow sm:rounded-lg sm:p-8 dark:bg-gray-800">
-                        <DeleteUserForm className="max-w-xl" />
-                    </div>
+                    <UpdatePasswordForm className="w-full" />
                 </div>
             </div>
         </AuthenticatedLayout>

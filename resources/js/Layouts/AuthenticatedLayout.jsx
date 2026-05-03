@@ -108,17 +108,19 @@ export default function AuthenticatedLayout({ header, children }) {
                         <img src="https://cdn-icons-png.flaticon.com/512/3418/3418886.png" alt="Shows" className="w-10 h-10 group-hover:brightness-110 group-active:brightness-75 drop-shadow-md" style={{ imageRendering: 'pixelated' }} />
                         <span className="text-white text-xs bg-transparent px-1 group-hover:bg-[#000080] group-hover:text-white border border-transparent group-hover:border-dotted group-hover:border-white text-center drop-shadow-md">Shows</span>
                     </Link>
+                    <Link href={route('profile.edit')} className="flex flex-col items-center gap-1 group">
+                        <img src="https://win98icons.alexmeub.com/icons/png/keys-0.png" alt="Access" className="w-10 h-10 group-hover:brightness-110 group-active:brightness-75 drop-shadow-md" style={{ imageRendering: 'pixelated' }} />
+                        <span className="text-white text-xs bg-transparent px-1 group-hover:bg-[#000080] group-hover:text-white border border-transparent group-hover:border-dotted group-hover:border-white text-center drop-shadow-md">Access</span>
+                    </Link>
                 </div>
 
                 {/* Main Content Area (Window Wrapper) */}
                 {!isClosed && !isMinimized && (
                     <div 
-                        className="absolute z-10 w-full max-w-6xl bg-[#c0c0c0] border-t-2 border-l-2 border-t-white border-l-white border-r-2 border-b-2 border-r-[#808080] border-b-[#808080] shadow-[1px_1px_0_#000] flex flex-col max-h-[85vh]"
+                        className="absolute z-10 w-full max-w-6xl bg-[#c0c0c0] border-t-2 border-l-2 border-t-white border-l-white border-r-2 border-b-2 border-r-[#808080] border-b-[#808080] shadow-[1px_1px_0_#000] flex flex-col max-h-[90vh] md:max-h-[85vh] left-0 right-0 mx-auto"
                         style={{ 
                             transform: `translate(${position.x}px, ${position.y}px)`,
-                            left: '50%',
-                            top: '5%',
-                            marginLeft: '-576px' // Half of max-w-6xl (1152px) to center it initially
+                            top: '2%',
                         }}
                     >
                         {/* Title Bar */}
