@@ -165,7 +165,7 @@ function ShowForm({ show = null, onCancel }) {
     return (
         <form onSubmit={handleSubmit} className="flex flex-col gap-3" style={{ fontFamily: 'Tahoma, sans-serif' }}>
             {/* Title + Status */}
-            <div className="flex gap-3">
+            <div className="flex flex-col md:flex-row gap-3">
                 <div className="flex flex-col gap-1 flex-1">
                     <Label>Title *</Label>
                     <Win98Input value={form.title} onChange={e => setForm(f => ({ ...f, title: e.target.value }))} required className="w-full" placeholder="Show title..." />
@@ -194,7 +194,7 @@ function ShowForm({ show = null, onCancel }) {
             {/* 3 Posters */}
             <div>
                 <Label>Posters (3 small)</Label>
-                <div className="flex gap-3 mt-1">
+                <div className="flex flex-col md:flex-row gap-3 mt-1">
                     {[1, 2, 3].map(n => (
                         <div key={n} className="flex-1">
                             <ImageUploadField label={`Poster ${n}`} fieldKey={`poster_${n}`}

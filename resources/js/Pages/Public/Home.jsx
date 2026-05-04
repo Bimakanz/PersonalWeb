@@ -149,14 +149,21 @@ function Window({ id, title, children, onClose, onMinimize, onFocus, minimized, 
     const [pos, setPos] = useState(initialPos || { x: 100, y: 80 });
     const [dragging, setDragging] = useState(false);
     const [rel, setRel] = useState({x: 0, y: 0});
+    const [isMobile, setIsMobile] = useState(false);
 
     useEffect(() => {
-        if (window.innerWidth < 768) {
-            setPos({ x: 0, y: 0 });
-        }
+        const checkMobile = () => {
+            const mobile = window.innerWidth < 768;
+            setIsMobile(mobile);
+            if (mobile) setPos({ x: 0, y: 0 });
+        };
+        checkMobile();
+        window.addEventListener('resize', checkMobile);
+        return () => window.removeEventListener('resize', checkMobile);
     }, []);
 
     const onPointerDown = (e) => {
+        if (isMobile) return;
         setDragging(true);
         setRel({ x: e.clientX - pos.x, y: e.clientY - pos.y });
         e.target.setPointerCapture(e.pointerId);
@@ -187,9 +194,9 @@ function Window({ id, title, children, onClose, onMinimize, onFocus, minimized, 
                 top: pos.y, 
                 position: 'absolute', 
                 zIndex: zIndex || 50, 
-                width: width, 
+                width: isMobile ? '100%' : width, 
                 maxWidth: '100%',
-                height: height, 
+                height: isMobile ? 'calc(100% - 40px)' : height, 
                 maxHeight: '100%',
                 display: minimized ? 'none' : 'flex', 
                 flexDirection: 'column' 
@@ -782,7 +789,7 @@ function VideoPlayerContent({ videos = [] }) {
     }
 
     const getEmbedUrl = () => {
-        if (embed.type === 'youtube') return `https://www.youtube.com/embed/${embed.id}?autoplay=1&mute=0&controls=0&disablekb=1&rel=0&modestbranding=1&playsinline=1&iv_load_policy=3`;
+        if (embed.type === 'youtube') return `https://www.youtube.com/embed/${embed.id}?autoplay=1&mute=0&controls=0&disablekb=1&rel=0&modestbranding=1&playsinline=1&iv_load_policy=3&loop=1&playlist=${embed.id}`;
         if (embed.type === 'tiktok')  return `https://www.tiktok.com/embed/v2/${embed.id}`;
         return null;
     };
@@ -828,7 +835,7 @@ function VideoPlayerContent({ videos = [] }) {
             <div className="flex-1 relative overflow-hidden bg-black" onClick={embed.type !== 'direct' ? undefined : skipToNext} style={{ cursor: embed.type === 'direct' ? 'pointer' : 'default' }}>
                 {embed.type === 'direct' && current && (
                     <video
-                        ref={videoRef} key={current.src} src={current.src}
+                        ref={videoRef} key={embed.src || current.src} src={embed.src || current.src}
                         autoPlay loop={false} onEnded={skipToNext}
                         className="w-full h-full object-contain"
                         style={{ pointerEvents: 'none' }}
@@ -1223,6 +1230,7 @@ function Desktop({ chatMessages, projects = [], videos = [], wallpaperFolders = 
         >
             {isVideoWallpaper && (
                 <video
+                    key={wallpaper}
                     src={wallpaper}
                     autoPlay loop muted playsInline
                     className="absolute inset-0 w-full h-full object-cover z-0 pointer-events-none"
@@ -1534,22 +1542,27 @@ function LoginScreen({ onLogin }) {
                         <div className="text-white text-xl tracking-wide mb-4" style={{ fontFamily: 'Tahoma, Arial, sans-serif', textShadow: '2px 2px 2px #000, 1px 1px 0px #000', WebkitFontSmoothing: 'none', fontSmooth: 'never' }}>Administrator</div>
 
                         {/* Password Field */}
-                        <div className="flex items-center gap-2 mb-4">
-                            <input 
-                                type="password" 
-                                placeholder="Password" 
-                                value={data.password}
-                                onChange={(e) => setData('password', e.target.value)}
-                                className="bg-[#2d2d2d] border border-[#555] text-white px-3 py-1.5 rounded-md outline-none focus:border-white focus:ring-1 focus:ring-white w-48 font-sans shadow-inner placeholder-gray-400 text-sm"
-                                autoFocus
-                            />
-                            <button 
-                                type="submit" 
-                                disabled={processing} 
-                                className="bg-[#444] hover:bg-[#555] border border-[#666] text-white px-3 py-1.5 rounded-md flex items-center justify-center transition-colors shadow-md"
-                            >
-                                →
-                            </button>
+                        <div className="flex flex-col items-center gap-1 mb-4">
+                            <div className="flex items-center gap-2">
+                                <input 
+                                    type="password" 
+                                    placeholder="Password" 
+                                    value={data.password}
+                                    onChange={(e) => setData('password', e.target.value)}
+                                    className="bg-[#2d2d2d] border border-[#555] text-white px-3 py-1.5 rounded-md outline-none focus:border-white focus:ring-1 focus:ring-white w-48 font-sans shadow-inner placeholder-gray-400 text-sm"
+                                    autoFocus
+                                />
+                                <button 
+                                    type="submit" 
+                                    disabled={processing} 
+                                    className="bg-[#444] hover:bg-[#555] border border-[#666] text-white px-3 py-1.5 rounded-md flex items-center justify-center transition-colors shadow-md disabled:opacity-50"
+                                >
+                                    →
+                                </button>
+                            </div>
+                            {errors.email && (
+                                <span className="text-red-400 text-xs font-bold font-sans animate-pulse">{errors.email}</span>
+                            )}
                         </div>
 
                         {/* Switch User Button */}

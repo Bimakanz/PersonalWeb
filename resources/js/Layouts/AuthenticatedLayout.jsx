@@ -16,6 +16,13 @@ export default function AuthenticatedLayout({ header, children }) {
     const [position, setPosition] = useState({ x: 0, y: 0 });
     const [isDragging, setIsDragging] = useState(false);
     const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
+    const [isMobile, setIsMobile] = useState(typeof window !== 'undefined' ? window.innerWidth < 768 : false);
+
+    useEffect(() => {
+        const handleResize = () => setIsMobile(window.innerWidth < 768);
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
 
     useEffect(() => {
         const timer = setInterval(() => setTime(new Date()), 1000);
@@ -30,6 +37,7 @@ export default function AuthenticatedLayout({ header, children }) {
     }, [url]);
 
     const handlePointerDown = (e) => {
+        if (isMobile) return;
         setIsDragging(true);
         setDragOffset({
             x: e.clientX - position.x,
@@ -81,9 +89,9 @@ export default function AuthenticatedLayout({ header, children }) {
             )}
 
             {/* Desktop Area */}
-            <div className="flex-1 p-4 relative h-[calc(100vh-2rem)] overflow-hidden">
+            <div className="flex-1 p-2 md:p-4 relative h-[calc(100vh-2rem)] overflow-hidden">
                 {/* Desktop Icons */}
-                <div className="absolute top-4 left-4 flex flex-col gap-6 w-24 z-0">
+                <div className={`absolute top-4 left-4 flex flex-col gap-4 md:gap-6 w-24 z-0 ${(!isClosed && !isMinimized && isMobile) ? 'hidden' : ''}`}>
                     <Link href={route('dashboard')} className="flex flex-col items-center gap-1 group">
                         <img src="https://win98icons.alexmeub.com/icons/png/computer_explorer-5.png" alt="Dashboard" className="w-10 h-10 group-hover:brightness-110 group-active:brightness-75 drop-shadow-md" style={{ imageRendering: 'pixelated' }} />
                         <span className="text-white text-xs bg-transparent px-1 group-hover:bg-[#000080] group-hover:text-white border border-transparent group-hover:border-dotted group-hover:border-white text-center drop-shadow-md">Dashboard</span>
@@ -117,10 +125,10 @@ export default function AuthenticatedLayout({ header, children }) {
                 {/* Main Content Area (Window Wrapper) */}
                 {!isClosed && !isMinimized && (
                     <div 
-                        className="absolute z-10 w-full max-w-6xl bg-[#c0c0c0] border-t-2 border-l-2 border-t-white border-l-white border-r-2 border-b-2 border-r-[#808080] border-b-[#808080] shadow-[1px_1px_0_#000] flex flex-col max-h-[90vh] md:max-h-[85vh] left-0 right-0 mx-auto"
+                        className={`absolute z-10 w-full md:max-w-6xl bg-[#c0c0c0] border-t-2 border-l-2 border-t-white border-l-white border-r-2 border-b-2 border-r-[#808080] border-b-[#808080] shadow-[1px_1px_0_#000] flex flex-col mx-auto ${isMobile ? 'inset-0 h-full max-h-none border-0' : 'max-h-[90vh] md:max-h-[85vh] left-0 right-0'}`}
                         style={{ 
-                            transform: `translate(${position.x}px, ${position.y}px)`,
-                            top: '2%',
+                            transform: isMobile ? 'none' : `translate(${position.x}px, ${position.y}px)`,
+                            top: isMobile ? '0' : '2%',
                         }}
                     >
                         {/* Title Bar */}
@@ -157,7 +165,7 @@ export default function AuthenticatedLayout({ header, children }) {
                         </div>
 
                         {/* Menu Bar (File, Edit, View, Help) */}
-                        <div className="flex gap-4 px-2 py-1 text-sm bg-[#c0c0c0] border-b border-[#808080] shrink-0 text-black">
+                        <div className="hidden md:flex gap-4 px-2 py-1 text-sm bg-[#c0c0c0] border-b border-[#808080] shrink-0 text-black">
                             <span className="hover:bg-[#000080] hover:text-white px-1 cursor-pointer"><span className="underline">F</span>ile</span>
                             <span className="hover:bg-[#000080] hover:text-white px-1 cursor-pointer"><span className="underline">E</span>dit</span>
                             <span className="hover:bg-[#000080] hover:text-white px-1 cursor-pointer"><span className="underline">V</span>iew</span>
@@ -165,7 +173,7 @@ export default function AuthenticatedLayout({ header, children }) {
                         </div>
 
                         {/* Window Content */}
-                        <div className="p-4 overflow-auto flex-1 bg-white border-t-2 border-l-2 border-t-[#808080] border-l-[#808080] border-r-2 border-b-2 border-r-white border-b-white m-1 shadow-[-1px_-1px_0_#000_inset] text-black">
+                        <div className="p-2 md:p-4 overflow-auto flex-1 bg-white border-t-2 border-l-2 border-t-[#808080] border-l-[#808080] border-r-2 border-b-2 border-r-white border-b-white m-1 shadow-[-1px_-1px_0_#000_inset] text-black">
                             {children}
                         </div>
                     </div>

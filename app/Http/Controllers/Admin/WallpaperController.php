@@ -19,7 +19,7 @@ class WallpaperController extends Controller
                 'wallpapers' => $f->wallpapers->map(fn($w) => [
                     'id'        => $w->id,
                     'name'      => $w->name,
-                    'image_url' => asset('storage/' . $w->image_path),
+                    'image_url' => str_starts_with($w->image_path, 'http') ? $w->image_path : asset('storage/' . $w->image_path),
                 ])->values(),
             ];
         });
@@ -50,10 +50,16 @@ class WallpaperController extends Controller
         $request->validate([
             'wallpaper_folder_id' => 'required|exists:wallpaper_folders,id',
             'name'  => 'required|string|max:100',
-            'image' => 'required|file|mimetypes:image/jpeg,image/png,image/gif,image/webp,video/mp4,video/webm|max:51200',
+            'type'  => 'required|in:file,url',
+            'image' => 'required_if:type,file|nullable|file|mimetypes:image/jpeg,image/png,image/gif,image/webp,video/mp4,video/webm|max:51200',
+            'url'   => 'required_if:type,url|nullable|url|max:2048',
         ]);
 
-        $path = $request->file('image')->store('wallpapers', 'public');
+        if ($request->type === 'file') {
+            $path = $request->file('image')->store('wallpapers', 'public');
+        } else {
+            $path = $request->url;
+        }
 
         Wallpaper::create([
             'wallpaper_folder_id' => $request->wallpaper_folder_id,

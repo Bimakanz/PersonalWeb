@@ -29,7 +29,7 @@ export default function WallpapersIndex({ folders }) {
     const [expandedFolders, setExpandedFolders] = useState({});
 
     const folderForm = useForm({ name: '' });
-    const wallpaperForm = useForm({ wallpaper_folder_id: '', name: '', image: null });
+    const wallpaperForm = useForm({ wallpaper_folder_id: '', name: '', type: 'file', image: null, url: '' });
 
     const handleFolderSubmit = (e) => {
         e.preventDefault();
@@ -51,9 +51,9 @@ export default function WallpapersIndex({ folders }) {
             <Head title="Wallpapers" />
             <div className="p-6 max-w-5xl mx-auto flex flex-col gap-4" style={{ fontFamily: 'Tahoma, sans-serif' }}>
 
-                <div className="flex gap-4 items-start">
+                <div className="flex flex-col md:flex-row gap-4 items-start">
                     {/* Left: forms */}
-                    <div className="flex flex-col gap-4 w-72 shrink-0">
+                    <div className="flex flex-col gap-4 w-full md:w-72 shrink-0">
                         {/* Create Folder */}
                         <div className="bg-[#c0c0c0] border-t-2 border-l-2 border-t-white border-l-white border-r-2 border-b-2 border-r-[#808080] border-b-[#808080]">
                             <div className="bg-[#000080] text-white text-sm font-bold px-2 py-1">📁 New Folder</div>
@@ -91,17 +91,37 @@ export default function WallpapersIndex({ folders }) {
                                 </div>
 
                                 <div className="flex flex-col gap-1">
-                                    <Label>Image File *</Label>
-                                    <input ref={imageRef} type="file" accept="image/*,video/mp4,video/webm" className="hidden" onChange={e => {
-                                        const file = e.target.files[0];
-                                        if (file) { wallpaperForm.setData('image', file); setImageFileName(file.name); }
-                                    }} />
-                                    <div className="flex gap-2 items-center">
-                                        <Win98Btn type="button" onClick={() => imageRef.current?.click()}>Browse...</Win98Btn>
-                                        <span className="text-xs text-gray-700 truncate max-w-[140px]">{imageFileName || 'No file selected'}</span>
-                                    </div>
-                                    {wallpaperForm.errors.image && <p className="text-red-700 text-xs">{wallpaperForm.errors.image}</p>}
+                                    <Label>Source Type *</Label>
+                                    <select
+                                        value={wallpaperForm.data.type}
+                                        onChange={e => { wallpaperForm.setData('type', e.target.value); wallpaperForm.clearErrors(); }}
+                                        className="border-t-2 border-l-2 border-t-[#808080] border-l-[#808080] border-r-2 border-b-2 border-r-white border-b-white bg-white px-2 py-1 text-sm outline-none w-full"
+                                    >
+                                        <option value="file">Upload File</option>
+                                        <option value="url">External Link (URL)</option>
+                                    </select>
                                 </div>
+
+                                {wallpaperForm.data.type === 'file' ? (
+                                    <div className="flex flex-col gap-1">
+                                        <Label>Image/Video File *</Label>
+                                        <input ref={imageRef} type="file" accept="image/*,video/mp4,video/webm" className="hidden" onChange={e => {
+                                            const file = e.target.files[0];
+                                            if (file) { wallpaperForm.setData('image', file); setImageFileName(file.name); }
+                                        }} />
+                                        <div className="flex gap-2 items-center">
+                                            <Win98Btn type="button" onClick={() => imageRef.current?.click()}>Browse...</Win98Btn>
+                                            <span className="text-xs text-gray-700 truncate max-w-[140px]">{imageFileName || 'No file selected'}</span>
+                                        </div>
+                                        {wallpaperForm.errors.image && <p className="text-red-700 text-xs">{wallpaperForm.errors.image}</p>}
+                                    </div>
+                                ) : (
+                                    <div className="flex flex-col gap-1">
+                                        <Label>Image/Video URL *</Label>
+                                        <Win98Input type="text" value={wallpaperForm.data.url} onChange={e => wallpaperForm.setData('url', e.target.value)} className="w-full" placeholder="https://..." />
+                                        {wallpaperForm.errors.url && <p className="text-red-700 text-xs">{wallpaperForm.errors.url}</p>}
+                                    </div>
+                                )}
 
                                 <div className="flex justify-end">
                                     <Win98Btn type="submit" disabled={wallpaperForm.processing}>
@@ -113,11 +133,11 @@ export default function WallpapersIndex({ folders }) {
                     </div>
 
                     {/* Right: Explorer + Preview */}
-                    <div className="flex-1 bg-[#c0c0c0] border-t-2 border-l-2 border-t-white border-l-white border-r-2 border-b-2 border-r-[#808080] border-b-[#808080] flex flex-col" style={{ minHeight: 400 }}>
+                    <div className="flex-1 w-full bg-[#c0c0c0] border-t-2 border-l-2 border-t-white border-l-white border-r-2 border-b-2 border-r-[#808080] border-b-[#808080] flex flex-col" style={{ minHeight: 400 }}>
                         <div className="bg-[#000080] text-white text-sm font-bold px-2 py-1 shrink-0">🗂️ Wallpaper Explorer</div>
-                        <div className="flex flex-1 overflow-hidden">
+                        <div className="flex flex-col md:flex-row flex-1 overflow-hidden">
                             {/* Tree panel — light gray matching Win98 */}
-                            <div className="w-52 border-r-2 border-r-[#808080] overflow-auto bg-white p-2 font-mono text-xs">
+                            <div className="w-full md:w-52 border-b-2 md:border-b-0 md:border-r-2 border-[#808080] max-h-48 md:max-h-none overflow-auto bg-white p-2 font-mono text-xs">
                                 <p className="text-gray-500 mb-1 text-[10px]">📁 My Computer / Images / background</p>
                                 {folders.length === 0 ? (
                                     <p className="text-gray-400 italic pl-2">No folders</p>

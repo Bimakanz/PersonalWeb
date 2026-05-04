@@ -6,7 +6,7 @@ export default function Dashboard({ projectsCount, messagesCount }) {
         <AuthenticatedLayout header="Dashboard Overview">
             <Head title="Dashboard" />
 
-            <div className="flex gap-4 p-4">
+            <div className="flex flex-col md:flex-row gap-4 p-4">
                 {/* Projects Stat */}
                 <div className="flex-1 bg-[#c0c0c0] border-t-2 border-l-2 border-t-white border-l-white border-r-2 border-b-2 border-r-[#808080] border-b-[#808080] p-6 flex flex-col items-center shadow-[1px_1px_0_#000]">
                     <img src="https://win98icons.alexmeub.com/icons/png/directory_open_file_mydocs-4.png" alt="Projects" className="w-16 h-16 mb-4" style={{ imageRendering: 'pixelated' }} />

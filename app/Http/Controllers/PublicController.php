@@ -33,7 +33,7 @@ class PublicController extends Controller
                 'wallpapers' => $f->wallpapers->map(fn($w) => [
                     'id'        => $w->id,
                     'name'      => $w->name,
-                    'image_url' => asset('storage/' . $w->image_path),
+                    'image_url' => str_starts_with($w->image_path, 'http') ? $w->image_path : asset('storage/' . $w->image_path),
                 ]),
             ];
         });

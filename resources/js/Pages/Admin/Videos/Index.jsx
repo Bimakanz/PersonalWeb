@@ -60,7 +60,10 @@ export default function VideosIndex({ videos }) {
 
     const getYouTubeEmbed = (src) => {
         const m = src?.match(/(?:watch\?v=|youtu\.be\/)([^&\s?]+)/);
-        return m ? `https://www.youtube.com/embed/${m[1]}?autoplay=0` : null;
+        // controls=0: Hide playbar
+        // modestbranding=1: Remove YT logo from control bar (though it might appear on the video itself)
+        // rel=0: Only show related videos from the same channel at the end
+        return m ? `https://www.youtube.com/embed/${m[1]}?autoplay=0&controls=0&modestbranding=1&rel=0` : null;
     };
 
     const getTikTokEmbed = (src) => {
@@ -138,9 +141,9 @@ export default function VideosIndex({ videos }) {
                 {showLibrary && (
                     <div className="bg-[#c0c0c0] border-t-2 border-l-2 border-t-white border-l-white border-r-2 border-b-2 border-r-[#808080] border-b-[#808080]">
                         <div className="bg-[#000080] text-white text-sm font-bold px-2 py-1">📼 Video Library ({videos.length})</div>
-                        <div className="flex" style={{ minHeight: 300 }}>
+                        <div className="flex flex-col md:flex-row" style={{ minHeight: 300 }}>
                             {/* List */}
-                            <div className="w-72 border-r-2 border-r-[#808080] overflow-auto bg-white">
+                            <div className="w-full md:w-72 border-b-2 md:border-b-0 md:border-r-2 border-[#808080] overflow-auto bg-white max-h-48 md:max-h-none">
                                 {videos.length === 0 ? (
                                     <p className="text-sm text-gray-500 italic p-4">No videos yet.</p>
                                 ) : videos.map(v => (
