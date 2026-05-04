@@ -1,6 +1,8 @@
 # Release Notes
 
-## [Unreleased](https://github.com/laravel/laravel/compare/v13.3.0...13.x)
+## [Unreleased](https://github.com/laravel/laravel/compare/assets...master)
+
+## [assets](https://github.com/laravel/laravel/compare/v13.3.0...assets) - 2026-05-03
 
 ## [v13.3.0](https://github.com/laravel/laravel/compare/v13.2.0...v13.3.0) - 2026-04-16
 
