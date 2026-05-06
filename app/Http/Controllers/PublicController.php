@@ -61,6 +61,23 @@ class PublicController extends Controller
         ]);
     }
 
+    public function getMessages()
+    {
+        $messages = \App\Models\Message::orderBy('created_at', 'asc')
+            ->limit(100)
+            ->get(['id', 'name', 'message', 'image_path', 'admin_reply', 'created_at'])
+            ->map(fn($m) => [
+                'id'          => $m->id,
+                'sender'      => $m->name,
+                'text'        => $m->message,
+                'image'       => $m->image_path ? asset('storage/' . $m->image_path) : null,
+                'admin_reply' => $m->admin_reply,
+            ])
+            ->values();
+
+        return response()->json($messages);
+    }
+
     public function storeMessage(Request $request)
     {
         $validated = $request->validate([

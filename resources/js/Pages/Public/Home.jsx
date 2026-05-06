@@ -47,7 +47,7 @@ function BiosScreen({ onBoot }) {
 
     useEffect(() => {
         if (!showMenu) return; // Hanya bisa ditekan kalau menu sudah muncul
-        
+
         const handleKey = (e) => {
             if (e.key === 'ArrowUp') {
                 e.preventDefault();
@@ -107,7 +107,7 @@ function BiosScreen({ onBoot }) {
                                     );
                                 })}
                             </div>
-                        </div>  
+                        </div>
                     </div>
 
                     {/* ASCII ART */}
@@ -129,7 +129,7 @@ function BiosScreen({ onBoot }) {
                     </style>
                     <div className="mt-8 md:mt-12 font-bold whitespace-pre rgb-text scale-[0.4] sm:scale-50 md:scale-100 origin-top-left -ml-2 md:ml-0 w-max max-w-none">
                         <pre>
-{`
+                            {`
 ███████╗██╗  ██╗███╗   ██╗ █████╗ ██╗███████╗    ███████╗██████╗  █████╗  ██████╗███████╗
 ██╔════╝╚██╗██╔╝████╗  ██║██╔══██╗╚═╝██╔════╝    ██╔════╝██╔══██╗██╔══██╗██╔════╝██╔════╝
 ███████╗ ╚███╔╝ ██╔██╗ ██║███████║   ███████╗    ███████╗██████╔╝███████║██║     █████╗  
@@ -148,7 +148,7 @@ function BiosScreen({ onBoot }) {
 function Window({ id, title, children, onClose, onMinimize, onFocus, minimized, zIndex, initialPos, darkTheme, isActive, height = 400, width = 450 }) {
     const [pos, setPos] = useState(initialPos || { x: 100, y: 80 });
     const [dragging, setDragging] = useState(false);
-    const [rel, setRel] = useState({x: 0, y: 0});
+    const [rel, setRel] = useState({ x: 0, y: 0 });
     const [isMobile, setIsMobile] = useState(false);
 
     useEffect(() => {
@@ -189,17 +189,17 @@ function Window({ id, title, children, onClose, onMinimize, onFocus, minimized, 
             initial={{ scale: 0.9, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 0.9, opacity: 0 }}
-            style={{ 
-                left: pos.x, 
-                top: pos.y, 
-                position: 'absolute', 
-                zIndex: zIndex || 50, 
-                width: isMobile ? '100%' : width, 
+            style={{
+                left: pos.x,
+                top: pos.y,
+                position: 'absolute',
+                zIndex: zIndex || 50,
+                width: isMobile ? '100%' : width,
                 maxWidth: '100%',
-                height: isMobile ? 'calc(100% - 40px)' : height, 
+                height: isMobile ? 'calc(100% - 40px)' : height,
                 maxHeight: '100%',
-                display: minimized ? 'none' : 'flex', 
-                flexDirection: 'column' 
+                display: minimized ? 'none' : 'flex',
+                flexDirection: 'column'
             }}
             onPointerDownCapture={onFocus}
             className={`border-2 shadow-[2px_2px_0_#000] select-none ${darkTheme ? 'border-gray-500 bg-[#333b3a]' : 'border-t-white border-l-white border-r-[#808080] border-b-[#808080] bg-[#c0c0c0]'}`}
@@ -276,11 +276,11 @@ function ImageViewer({ src, onClose }) {
                 <div className="flex gap-1">
                     <button onClick={() => setScale(s => s + 0.2)} className="w-6 h-6 flex items-center justify-center bg-[#c0c0c0] text-black border-2 border-t-white border-l-white border-r-[#808080] border-b-[#808080] text-xs font-bold shadow-[1px_1px_0_#000] active:border-t-[#808080] active:border-l-[#808080] active:border-r-white active:border-b-white">+</button>
                     <button onClick={() => setScale(s => Math.max(0.2, s - 0.2))} className="w-6 h-6 flex items-center justify-center bg-[#c0c0c0] text-black border-2 border-t-white border-l-white border-r-[#808080] border-b-[#808080] text-xs font-bold shadow-[1px_1px_0_#000] active:border-t-[#808080] active:border-l-[#808080] active:border-r-white active:border-b-white">-</button>
-                    <button onClick={() => { setScale(1); setPos({x:0, y:0}); }} className="px-2 bg-[#c0c0c0] text-black border-2 border-t-white border-l-white border-r-[#808080] border-b-[#808080] text-xs shadow-[1px_1px_0_#000] active:border-t-[#808080] active:border-l-[#808080] active:border-r-white active:border-b-white">Reset</button>
+                    <button onClick={() => { setScale(1); setPos({ x: 0, y: 0 }); }} className="px-2 bg-[#c0c0c0] text-black border-2 border-t-white border-l-white border-r-[#808080] border-b-[#808080] text-xs shadow-[1px_1px_0_#000] active:border-t-[#808080] active:border-l-[#808080] active:border-r-white active:border-b-white">Reset</button>
                 </div>
                 <button onClick={onClose} className="px-2 bg-[#c0c0c0] text-black border-2 border-t-white border-l-white border-r-[#808080] border-b-[#808080] text-xs font-bold shadow-[1px_1px_0_#000] active:border-t-[#808080] active:border-l-[#808080] active:border-r-white active:border-b-white">Close</button>
             </div>
-            <div 
+            <div
                 className="flex-1 relative overflow-hidden bg-[#333b3a] cursor-move"
                 onWheel={handleWheel}
                 onPointerDown={handlePointerDown}
@@ -288,9 +288,9 @@ function ImageViewer({ src, onClose }) {
                 onPointerUp={handlePointerUp}
                 onPointerCancel={handlePointerUp}
             >
-                <img 
-                    src={src} 
-                    alt="Preview" 
+                <img
+                    src={src}
+                    alt="Preview"
                     className="absolute max-w-none pointer-events-none"
                     style={{
                         transform: `translate(calc(-50% + ${pos.x}px), calc(-50% + ${pos.y}px)) scale(${scale})`,
@@ -309,7 +309,7 @@ function NotepadContent({ projects = [] }) {
     const [tab, setTab] = useState('Home');
     const [selectedProject, setSelectedProject] = useState(null);
     const [fullScreenImage, setFullScreenImage] = useState(null);
-    
+
     const tabs = ['Home', 'About', 'Projects'];
 
     return (
@@ -320,25 +320,24 @@ function NotepadContent({ projects = [] }) {
                     <button
                         key={t}
                         onClick={() => { setTab(t); setSelectedProject(null); }}
-                        className={`px-3 py-1 outline-none relative ${i > 0 ? '-ml-[2px]' : ''} ${
-                            tab === t
-                            ? 'text-white border-t-2 border-l-2 border-r-2 border-t-white border-l-white border-r-[#202020] bg-[#4a5553] z-20 pb-[6px] -mt-1 shadow-[1px_0_0_#000]'
-                            : 'text-gray-300 border-t-2 border-l-2 border-r-2 border-t-white border-l-white border-r-[#202020] bg-[#4a5553] z-0 pb-1 mt-1 hover:text-white shadow-[1px_0_0_#000]'
-                        }`}
+                        className={`px-3 py-1 outline-none relative ${i > 0 ? '-ml-[2px]' : ''} ${tab === t
+                                ? 'text-white border-t-2 border-l-2 border-r-2 border-t-white border-l-white border-r-[#202020] bg-[#4a5553] z-20 pb-[6px] -mt-1 shadow-[1px_0_0_#000]'
+                                : 'text-gray-300 border-t-2 border-l-2 border-r-2 border-t-white border-l-white border-r-[#202020] bg-[#4a5553] z-0 pb-1 mt-1 hover:text-white shadow-[1px_0_0_#000]'
+                            }`}
                     >
                         <span style={{ textShadow: '1px 1px 0px #000' }}>{t}</span>
                     </button>
                 ))}
             </div>
-            
+
             {/* Main Content Area */}
             <div className="flex-1 border-t-2 border-l-2 border-r-2 border-b-2 border-t-white border-l-white border-r-[#202020] border-b-[#202020] z-10 bg-[#4a5553] overflow-auto shadow-[1px_1px_0_#000] relative" style={{ fontFamily: 'Tahoma, "MS Sans Serif", sans-serif' }}>
-                
+
                 {/* Project Detail Overlay */}
                 <AnimatePresence>
                     {fullScreenImage && <ImageViewer key="viewer" src={fullScreenImage} onClose={() => setFullScreenImage(null)} />}
                 </AnimatePresence>
-                
+
                 {selectedProject && (
                     <div className="absolute inset-0 bg-[#4a5553] z-20 p-4 flex flex-col gap-3 overflow-auto">
                         <button
@@ -350,7 +349,7 @@ function NotepadContent({ projects = [] }) {
                         <h2 className="text-lg font-bold" style={{ textShadow: '1px 1px 0px #000' }}>{selectedProject.title}</h2>
 
                         {selectedProject.image && (
-                            <div 
+                            <div
                                 className="border-2 border-t-[#202020] border-l-[#202020] border-r-white border-b-white p-1 bg-black/20 w-full cursor-pointer hover:bg-black/40 transition-colors group relative"
                                 onClick={() => setFullScreenImage(`/storage/${selectedProject.image}`)}
                             >
@@ -358,7 +357,7 @@ function NotepadContent({ projects = [] }) {
                                     src={`/storage/${selectedProject.image}`}
                                     alt={selectedProject.title}
                                     className="w-full h-auto"
-                                    onError={e => e.target.style.display='none'}
+                                    onError={e => e.target.style.display = 'none'}
                                 />
                                 <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity bg-black/50 pointer-events-none"></div>
                             </div>
@@ -410,27 +409,27 @@ function NotepadContent({ projects = [] }) {
                             <div className="w-32 h-32 border-2 border-t-[#202020] border-l-[#202020] border-r-white border-b-white p-1 bg-black/20 mb-3 shadow-[1px_1px_0_#000_inset]">
                                 <img src="https://i.pinimg.com/originals/08/9f/0c/089f0c04efafb0c919fbdab7d52891bb.gif" alt="gif" className="w-full h-full object-cover" />
                             </div>
-                            <p className="mb-4 text-white" style={{ textShadow: '1px 1px 0px #000' }}>A Student from PESAT Vocational highschool, and currently grade XI. <br/> And i am a fullstack developer?.. or maybe a frontend</p>
-                            
+                            <p className="mb-4 text-white" style={{ textShadow: '1px 1px 0px #000' }}>A Student from PESAT Vocational highschool, and currently grade XI. <br /> And i am a fullstack developer?.. or maybe a frontend</p>
+
                             <fieldset className="border-2 border-t-[#808080] border-l-[#808080] border-r-white border-b-white p-3 pt-1 relative mt-4 shadow-[1px_1px_0_#000]">
                                 <legend className="px-1 text-xs text-white absolute -top-2 left-2 bg-[#4a5553]" style={{ textShadow: '1px 1px 0px #000' }}>Sena's Note</legend>
                                 <p className="text-sm leading-relaxed text-white" style={{ textShadow: '1px 1px 0px #000', paddingTop: '10px' }}>
-                                    this is an old windows aethsetic webpage I made to display some info about me. i also added some random tiktoks, music, anime, and games.<br/><br/>
-                                    if you're seeing this, this page is ongoing. <br/> Maybe im going to make this webpage better, but i think now is okay tho
+                                    this is an old windows aethsetic webpage I made to display some info about me. i also added some random tiktoks, music, anime, and games.<br /><br />
+                                    if you're seeing this, this page is ongoing. <br /> Maybe im going to make this webpage better, but i think now is okay tho
                                 </p>
                             </fieldset>
                         </motion.div>
                     )}
-                    
+
                     {tab === 'About' && (
                         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
                             <h2 className="text-xl font-bold mb-3 tracking-wide" style={{ textShadow: '1px 1px 0px #000' }}>who is Sxna?</h2>
-                            <p className="mb-3 text-white" style={{ textShadow: '1px 1px 0px #000' }}>just a random kid that don't feel like living anymore <br/> (istg im so cool and emo ngl)</p>
+                            <p className="mb-3 text-white" style={{ textShadow: '1px 1px 0px #000' }}>just a random kid that don't feel like living anymore <br /> (istg im so cool and emo ngl)</p>
                             <div className="w-32 h-32 border-2 border-t-[#202020] border-l-[#202020] border-r-white border-b-white p-1 bg-black/20 mb-4 shadow-[1px_1px_0_#000_inset]">
                                 <img src="https://i.pinimg.com/originals/45/ab/99/45ab9927564f81ae76917f5fe76cc66d.gif" alt="Rei" className="w-full h-full object-cover" />
                             </div>
                             <p className="text-sm leading-relaxed text-white" style={{ textShadow: '1px 1px 0px #000' }}>
-                                I hate bugs, I hate humans, I hate everything. <br/> istg im so edgy 💔
+                                I hate bugs, I hate humans, I hate everything. <br /> istg im so edgy 💔
                             </p>
                         </motion.div>
                     )}
@@ -473,22 +472,65 @@ function MessageBoardContent({ initialMessages = [] }) {
     const [name, setName] = useState('unknown');
     const [joined, setJoined] = useState(false);
     const [localMessages, setLocalMessages] = useState(initialMessages.map(m => ({
+        id: m.id,
         sender: m.name,
         text: m.message,
-        image: m.image_path ? `/storage/${m.image_path}` : null,
+        image: m.image_path ? (m.image_path.startsWith('http') ? m.image_path : `/storage/${m.image_path}`) : null,
         admin_reply: m.admin_reply
     })));
     const [imagePreview, setImagePreview] = useState(null);
     const [modalImage, setModalImage] = useState(null);
+    const [isLive, setIsLive] = useState(false);
     const fileInputRef = useRef(null);
     const endOfMessagesRef = useRef(null);
-    
+    const lastMessageIdRef = useRef(initialMessages.length > 0 ? Math.max(...initialMessages.map(m => m.id ?? 0)) : 0);
+    const isAtBottomRef = useRef(true);
+    const chatContainerRef = useRef(null);
+
     const { data, setData, post, processing, reset } = useForm({
         name: '',
         email: '',
         message: '',
         image: null,
     });
+
+    const handleScroll = () => {
+        if (!chatContainerRef.current) return;
+        const { scrollTop, scrollHeight, clientHeight } = chatContainerRef.current;
+        isAtBottomRef.current = scrollHeight - scrollTop - clientHeight < 60;
+    };
+
+    useEffect(() => {
+        if (!joined) return;
+
+        const poll = async () => {
+            try {
+                const res = await fetch('/api/messages');
+                if (!res.ok) return;
+                const fetched = await res.json();
+
+                setLocalMessages(prev => {
+                    const prevMax = lastMessageIdRef.current;
+                    const hasNew = fetched.some(m => m.id > prevMax);
+                    if (!hasNew) return prev;
+                    const newMax = Math.max(...fetched.map(m => m.id));
+                    lastMessageIdRef.current = newMax;
+                    if (isAtBottomRef.current) {
+                        setTimeout(() => endOfMessagesRef.current?.scrollIntoView({ behavior: 'smooth' }), 100);
+                    }
+                    return fetched;
+                });
+
+                setIsLive(true);
+            } catch (e) {
+                setIsLive(false);
+            }
+        };
+
+        poll();
+        const interval = setInterval(poll, 5000);
+        return () => clearInterval(interval);
+    }, [joined]);
 
     const handleJoin = () => {
         if (name.trim()) {
@@ -506,19 +548,19 @@ function MessageBoardContent({ initialMessages = [] }) {
         reader.onload = ev => setImagePreview(ev.target.result);
         reader.readAsDataURL(file);
     };
-    
+
     const handleSend = (e) => {
         e?.preventDefault();
         if (!data.message.trim() && !data.image) return;
-        
-        // Optimistic UI update
-        setLocalMessages(prev => [...prev, { 
-            sender: name, 
-            text: data.message, 
-            image: imagePreview 
+
+        setLocalMessages(prev => [...prev, {
+            id: Date.now(),
+            sender: name,
+            text: data.message,
+            image: imagePreview
         }]);
         setImagePreview(null);
-        
+
         post(route('contact.store'), {
             forceFormData: true,
             preserveScroll: true,
@@ -530,7 +572,7 @@ function MessageBoardContent({ initialMessages = [] }) {
             }
         });
     };
-    
+
     return (
         <div className="relative flex flex-col h-full bg-[#1a1a1a] text-white p-2" style={{ fontFamily: 'Tahoma, sans-serif' }}>
             {/* Fullscreen Image Modal */}
@@ -545,19 +587,21 @@ function MessageBoardContent({ initialMessages = [] }) {
 
             {/* The Chat Area (Blurred if not joined) */}
             <div className={`flex flex-col h-full transition-all duration-300 ${!joined ? 'blur-sm opacity-60 select-none pointer-events-none' : ''}`}>
-                <div className="flex-1 overflow-auto mb-2 text-sm flex flex-col gap-3 p-1">
-                    <div className="text-gray-500 italic">-- Message Board --</div>
+                <div ref={chatContainerRef} onScroll={handleScroll} className="flex-1 overflow-auto mb-2 text-sm flex flex-col gap-3 p-1">
+                    <div className="text-gray-500 italic">
+                        -- Message Board --
+                    </div>
                     {localMessages.length === 0 && (
                         <div className="text-gray-600 italic text-xs">No messages yet. Be the first to say something!</div>
                     )}
-                    {localMessages.map((msg, i) => (
-                        <div key={i}>
-                            <span className="font-bold text-gray-300">{msg.sender}:</span> 
+                    {localMessages.map((msg) => (
+                        <div key={msg.id}>
+                            <span className="font-bold text-gray-300">{msg.sender}:</span>
                             {msg.text && <div className="text-gray-400 mt-0.5">{msg.text}</div>}
                             {msg.image && (
-                                <img 
-                                    src={msg.image} 
-                                    alt="uploaded" 
+                                <img
+                                    src={msg.image}
+                                    alt="uploaded"
                                     className="mt-1 max-w-[200px] max-h-[150px] object-contain border border-[#333] cursor-pointer hover:border-[#666] transition-colors"
                                     onClick={() => setModalImage(msg.image)}
                                 />
@@ -572,14 +616,14 @@ function MessageBoardContent({ initialMessages = [] }) {
                     ))}
                     <div ref={endOfMessagesRef} />
                 </div>
-                
+
                 {/* Image preview strip */}
                 {imagePreview && (
                     <div className="mb-1 px-1">
                         <div className="relative inline-block">
                             <img src={imagePreview} alt="preview" className="h-10 w-10 object-cover border border-[#444]" />
-                            <button 
-                                onClick={() => { setImagePreview(null); setData('image', null); if(fileInputRef.current) fileInputRef.current.value=''; }} 
+                            <button
+                                onClick={() => { setImagePreview(null); setData('image', null); if (fileInputRef.current) fileInputRef.current.value = ''; }}
                                 className="absolute -top-1.5 -right-1.5 w-4 h-4 bg-[#3a3a3a] text-white text-[9px] leading-none flex items-center justify-center border-t border-l border-t-white/30 border-l-white/30 border-r border-b border-r-[#000] border-b-[#000] active:border-t-[#000] active:border-l-[#000] active:border-r-white/30 active:border-b-white/30 outline-none font-bold"
                             >×</button>
                         </div>
@@ -600,16 +644,16 @@ function MessageBoardContent({ initialMessages = [] }) {
                             <path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"></path>
                         </svg>
                     </label>
-                    <input 
-                        type="text" 
+                    <input
+                        type="text"
                         value={data.message}
                         onChange={e => setData('message', e.target.value)}
                         onKeyDown={e => e.key === 'Enter' && !e.shiftKey && handleSend(e)}
-                        className="flex-1 bg-[#222] border-t border-l border-t-[#000] border-l-[#000] border-r border-b border-r-[#444] border-b-[#444] px-2 text-sm text-white outline-none" 
-                        placeholder="Type a message..." 
+                        className="flex-1 bg-[#222] border-t border-l border-t-[#000] border-l-[#000] border-r border-b border-r-[#444] border-b-[#444] px-2 text-sm text-white outline-none"
+                        placeholder="Type a message..."
                         disabled={processing || !joined}
                     />
-                    <button 
+                    <button
                         type="submit"
                         disabled={processing || !joined}
                         className="bg-[#3a3a3a] px-3 font-bold border-t border-l border-t-white/30 border-l-white/30 border-r border-b border-r-[#000] border-b-[#000] active:border-t-[#000] active:border-l-[#000] active:border-r-white/30 active:border-b-white/30 text-sm outline-none text-white"
@@ -624,15 +668,15 @@ function MessageBoardContent({ initialMessages = [] }) {
                 <div className="absolute inset-0 flex items-center justify-center z-10 p-4">
                     <div className="bg-[#2b2b2b] border-t border-l border-t-[#666] border-l-[#666] border-r border-b border-r-[#111] border-b-[#111] p-5 shadow-[4px_4px_10px_rgba(0,0,0,0.6)] w-full max-w-[260px]">
                         <h3 className="font-bold mb-3 text-white text-md tracking-wide" style={{ fontFamily: 'Georgia, serif' }}>Your Username</h3>
-                        <input 
-                            type="text" 
-                            value={name} 
+                        <input
+                            type="text"
+                            value={name}
                             onChange={e => setName(e.target.value)}
                             onKeyDown={e => e.key === 'Enter' && handleJoin()}
                             className="w-full bg-[#1a1a1a] border-t border-l border-t-[#000] border-l-[#000] border-r border-b border-r-[#444] border-b-[#444] px-2 py-1.5 text-sm text-gray-400 font-mono outline-none mb-4"
                         />
                         <div className="flex justify-end">
-                            <button 
+                            <button
                                 onClick={handleJoin}
                                 className="bg-[#444] hover:bg-[#4a4a4a] px-3 py-1 text-sm border-t border-l border-t-white/30 border-l-white/30 border-r border-b border-r-[#111] border-b-[#111] active:border-t-[#111] active:border-l-[#111] active:border-r-white/30 active:border-b-white/30 outline-none text-white shadow-sm transition-colors"
                             >
@@ -699,7 +743,7 @@ function ContactContent() {
                         title="GitHub"
                     >
                         <svg viewBox="0 0 24 24" fill="white" width="20" height="20" style={{ imageRendering: 'pixelated' }}>
-                            <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/>
+                            <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z" />
                         </svg>
                     </a>
 
@@ -718,7 +762,7 @@ function ContactContent() {
                         title="Discord"
                     >
                         <svg viewBox="0 0 24 24" fill="white" width="20" height="20" style={{ imageRendering: 'pixelated' }}>
-                            <path d="M20.317 4.37a19.791 19.791 0 00-4.885-1.515.074.074 0 00-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 00-5.487 0 12.64 12.64 0 00-.617-1.25.077.077 0 00-.079-.037A19.736 19.736 0 003.677 4.37a.07.07 0 00-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 00.031.057 19.9 19.9 0 005.993 3.03.078.078 0 00.084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 00-.041-.106 13.107 13.107 0 01-1.872-.892.077.077 0 01-.008-.128 10.2 10.2 0 00.372-.292.074.074 0 01.077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 01.078.01c.12.098.246.198.373.292a.077.077 0 01-.006.127 12.299 12.299 0 01-1.873.892.077.077 0 00-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 00.084.028 19.839 19.839 0 006.002-3.03.077.077 0 00.032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 00-.031-.028zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/>
+                            <path d="M20.317 4.37a19.791 19.791 0 00-4.885-1.515.074.074 0 00-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 00-5.487 0 12.64 12.64 0 00-.617-1.25.077.077 0 00-.079-.037A19.736 19.736 0 003.677 4.37a.07.07 0 00-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 00.031.057 19.9 19.9 0 005.993 3.03.078.078 0 00.084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 00-.041-.106 13.107 13.107 0 01-1.872-.892.077.077 0 01-.008-.128 10.2 10.2 0 00.372-.292.074.074 0 01.077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 01.078.01c.12.098.246.198.373.292a.077.077 0 01-.006.127 12.299 12.299 0 01-1.873.892.077.077 0 00-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 00.084.028 19.839 19.839 0 006.002-3.03.077.077 0 00.032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 00-.031-.028zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z" />
                         </svg>
                     </a>
 
@@ -737,7 +781,7 @@ function ContactContent() {
                         title="Spotify"
                     >
                         <svg viewBox="0 0 24 24" fill="white" width="22" height="22" style={{ imageRendering: 'pixelated' }}>
-                            <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.521 17.34c-.24.394-.752.515-1.147.275-3.14-1.92-7.09-2.355-11.751-1.29-.462.106-.91-.184-1.016-.645-.105-.46.184-.91.644-1.015 5.106-1.166 9.467-.674 12.996 1.482.394.24.515.753.274 1.148zm1.567-3.486c-.302.489-.933.64-1.423.338-3.585-2.203-9.06-2.825-13.064-1.545-.55.176-1.134-.127-1.31-.678-.176-.55.127-1.134.678-1.31 4.582-1.464 10.638-.775 14.78 1.77.49.301.64 1.002.339 1.425zm.14-3.643C15.013 7.697 8.736 7.5 5.088 8.608c-.66.202-1.348-.17-1.549-.83-.201-.66.17-1.348.83-1.55 4.19-1.272 11.138-1.042 16.038 1.865.592.35 1.127 1.114.777 1.706-.35.593-1.115.776-1.706.412z"/>
+                            <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.521 17.34c-.24.394-.752.515-1.147.275-3.14-1.92-7.09-2.355-11.751-1.29-.462.106-.91-.184-1.016-.645-.105-.46.184-.91.644-1.015 5.106-1.166 9.467-.674 12.996 1.482.394.24.515.753.274 1.148zm1.567-3.486c-.302.489-.933.64-1.423.338-3.585-2.203-9.06-2.825-13.064-1.545-.55.176-1.134-.127-1.31-.678-.176-.55.127-1.134.678-1.31 4.582-1.464 10.638-.775 14.78 1.77.49.301.64 1.002.339 1.425zm.14-3.643C15.013 7.697 8.736 7.5 5.088 8.608c-.66.202-1.348-.17-1.549-.83-.201-.66.17-1.348.83-1.55 4.19-1.272 11.138-1.042 16.038 1.865.592.35 1.127 1.114.777 1.706-.35.593-1.115.776-1.706.412z" />
                         </svg>
                     </a>
                 </div>
@@ -761,7 +805,7 @@ function VideoPlayerContent({ videos = [] }) {
             // Force replay if there's only 1 video
             if (embed.type === 'direct' && videoRef.current) {
                 videoRef.current.currentTime = 0;
-                videoRef.current.play().catch(() => {});
+                videoRef.current.play().catch(() => { });
             } else {
                 // For iframe, forcing a re-render by briefly setting index to -1 and back to 0
                 setCurrentIndex(-1);
@@ -776,7 +820,7 @@ function VideoPlayerContent({ videos = [] }) {
         if (currentIndex === -1) return;
         if (embed.type === 'direct' && videoRef.current) {
             videoRef.current.volume = volume;
-            videoRef.current.play().catch(() => {});
+            videoRef.current.play().catch(() => { });
         }
     }, [currentIndex]);
 
@@ -790,7 +834,7 @@ function VideoPlayerContent({ videos = [] }) {
 
     const getEmbedUrl = () => {
         if (embed.type === 'youtube') return `https://www.youtube.com/embed/${embed.id}?autoplay=1&mute=0&controls=0&disablekb=1&rel=0&modestbranding=1&playsinline=1&iv_load_policy=3&loop=1&playlist=${embed.id}`;
-        if (embed.type === 'tiktok')  return `https://www.tiktok.com/embed/v2/${embed.id}`;
+        if (embed.type === 'tiktok') return `https://www.tiktok.com/embed/v2/${embed.id}`;
         return null;
     };
     const embedUrl = getEmbedUrl();
@@ -799,8 +843,8 @@ function VideoPlayerContent({ videos = [] }) {
         <div className="flex flex-col h-full bg-[#1a1a1a] text-white select-none" style={{ fontFamily: 'Tahoma, sans-serif' }}>
             {/* Menu bar */}
             <div className="flex items-center gap-4 px-2 py-0.5 bg-[#c0c0c0] text-black text-xs border-b border-[#808080] shrink-0">
-                {['File','Edit','View','Go','Favorites','Help'].map(m => <span key={m} className="cursor-default hover:bg-[#000080] hover:text-white px-1">{m}</span>)}
-                
+                {['File', 'Edit', 'View', 'Go', 'Favorites', 'Help'].map(m => <span key={m} className="cursor-default hover:bg-[#000080] hover:text-white px-1">{m}</span>)}
+
                 <div className="ml-auto relative">
                     <span
                         className="cursor-pointer font-bold"
@@ -843,18 +887,18 @@ function VideoPlayerContent({ videos = [] }) {
                 )}
                 {(embed.type === 'youtube' || embed.type === 'tiktok') && embedUrl && (
                     <div className="absolute inset-0 flex items-center justify-center overflow-hidden">
-                        <iframe 
-                            key={embedUrl} 
-                            src={embedUrl} 
-                            className="absolute pointer-events-none border-0" 
-                            style={{ 
-                                width: embed.type === 'youtube' ? '150%' : '100%', 
+                        <iframe
+                            key={embedUrl}
+                            src={embedUrl}
+                            className="absolute pointer-events-none border-0"
+                            style={{
+                                width: embed.type === 'youtube' ? '150%' : '100%',
                                 height: embed.type === 'youtube' ? 'auto' : '100%',
                                 aspectRatio: embed.type === 'youtube' ? '16/9' : 'auto',
-                                transform: embed.type === 'youtube' ? 'scale(1.35)' : 'none' 
+                                transform: embed.type === 'youtube' ? 'scale(1.35)' : 'none'
                             }}
-                            allow="autoplay; encrypted-media" 
-                            allowFullScreen={false} 
+                            allow="autoplay; encrypted-media"
+                            allowFullScreen={false}
                         />
                         <div className="absolute inset-0 z-10 cursor-pointer" onClick={skipToNext} title="Click to skip" />
                     </div>
@@ -865,11 +909,108 @@ function VideoPlayerContent({ videos = [] }) {
     );
 }
 
+function SpotifyWidget() {
+    const [spotifyData, setSpotifyData] = useState(null);
+    const [open, setOpen] = useState(false);
+
+    useEffect(() => {
+        const fetchSpotify = async () => {
+            try {
+                const res = await fetch('/api/spotify');
+                if (!res.ok) return;
+                const json = await res.json();
+                if (json.status !== 'not_configured') setSpotifyData(json);
+            } catch (e) {}
+        };
+        fetchSpotify();
+        const interval = setInterval(fetchSpotify, 30000);
+        return () => clearInterval(interval);
+    }, []);
+
+    if (!spotifyData || spotifyData.status === 'not_configured') return null;
+
+    const isPlaying = spotifyData.status === 'playing';
+    const topTrack = isPlaying ? spotifyData : (spotifyData.tracks?.[0] ?? null);
+    if (!topTrack) return null;
+
+    return (
+        <div className="relative h-full flex items-center">
+            <button
+                onClick={() => setOpen(v => !v)}
+                title={`${isPlaying ? '🎵 Now Playing' : '🕐 Last Played'}: ${topTrack.track} — ${topTrack.artist}`}
+                className="h-full px-2 flex items-center gap-1.5 bg-[#c0c0c0] border-t-2 border-l-2 border-t-[#808080] border-l-[#808080] border-r-2 border-b-2 border-r-white border-b-white shadow-[1px_1px_0_#000_inset]"
+            >
+                {topTrack.cover
+                    ? <img src={topTrack.cover} alt="album" className="w-4 h-4 object-cover" />
+                    : <span className="text-xs">🎵</span>
+                }
+                <span className="text-[10px] font-bold text-black max-w-[80px] truncate hidden md:block">
+                    {topTrack.track}
+                </span>
+            </button>
+
+            {open && (
+                <div className="absolute bottom-full right-0 mb-1 w-64 bg-[#c0c0c0] border-t-2 border-l-2 border-t-white border-l-white border-r-2 border-b-2 border-r-[#808080] border-b-[#808080] shadow-[2px_2px_0_#000] z-[300]">
+                    {/* Title bar */}
+                    <div className="bg-[#000080] text-white text-[11px] font-bold px-2 py-0.5 flex justify-between items-center">
+                        <span>{isPlaying ? '♫ Now Playing' : '♪ Recently Played'}</span>
+                        <button onClick={() => setOpen(false)} className="w-4 h-4 bg-[#c0c0c0] text-black text-xs font-bold flex items-center justify-center border-t border-l border-t-white border-l-white border-r border-b border-r-[#808080] border-b-[#808080] leading-none">×</button>
+                    </div>
+
+                    {isPlaying ? (
+                        <div className="p-2 flex gap-2 items-start">
+                            {spotifyData.cover && (
+                                <img src={spotifyData.cover} alt="album" className="w-12 h-12 object-cover border border-[#808080] shrink-0" />
+                            )}
+                            <div className="flex-1 min-w-0">
+                                <div className="text-[11px] font-bold truncate">{spotifyData.track}</div>
+                                <div className="text-[10px] text-gray-600 truncate">{spotifyData.artist}</div>
+                                <div className="text-[10px] text-gray-500 truncate italic">{spotifyData.album}</div>
+                                {spotifyData.duration > 0 && (
+                                    <div className="mt-1.5 w-full h-1.5 bg-[#808080] border border-[#606060]">
+                                        <div
+                                            className="h-full bg-[#000080]"
+                                            style={{ width: `${Math.min(100, (spotifyData.progress / spotifyData.duration) * 100)}%` }}
+                                        />
+                                    </div>
+                                )}
+                                {spotifyData.url && (
+                                    <a href={spotifyData.url} target="_blank" rel="noreferrer" className="text-[10px] text-[#000080] underline mt-1 block">
+                                        Open in Spotify →
+                                    </a>
+                                )}
+                            </div>
+                        </div>
+                    ) : (
+                        <div className="py-1">
+                            {spotifyData.tracks?.map((t, i) => (
+                                <a
+                                    key={i}
+                                    href={t.url}
+                                    target="_blank"
+                                    rel="noreferrer"
+                                    className="flex items-center gap-2 px-2 py-1 hover:bg-[#000080] hover:text-white group"
+                                >
+                                    {t.cover && <img src={t.cover} alt="" className="w-6 h-6 object-cover shrink-0" />}
+                                    <div className="flex-1 min-w-0">
+                                        <div className="text-[10px] font-bold truncate">{t.track}</div>
+                                        <div className="text-[9px] text-gray-500 group-hover:text-gray-300 truncate">{t.artist}</div>
+                                    </div>
+                                </a>
+                            ))}
+                        </div>
+                    )}
+                </div>
+            )}
+        </div>
+    );
+}
+
 function WallpaperEngineContent({ folders = [], onWallpaperChange }) {
     const [expanded, setExpanded] = useState({ mypc: false, images: false, background: false });
     const [expandedFolders, setExpandedFolders] = useState({});
     const [selected, setSelected] = useState(null); // highlighted in tree
-    const [applied, setApplied]   = useState(null); // currently applied (for preview only, not yet wallpaper)
+    const [applied, setApplied] = useState(null); // currently applied (for preview only, not yet wallpaper)
 
     const toggle = (key) => setExpanded(p => ({ ...p, [key]: !p[key] }));
     const toggleFolder = (id) => setExpandedFolders(p => ({ ...p, [id]: !p[id] }));
@@ -993,7 +1134,7 @@ function ShowsContent({ shows = [] }) {
 
     return (
         <div className="flex flex-col md:flex-row h-full bg-[#111] text-white select-none gap-2 p-1.5" style={{ fontFamily: '"MS Sans Serif", Tahoma, sans-serif' }}>
-            
+
             {/* Fullscreen Image Modal */}
             {modalImage && (
                 <div className="fixed inset-0 z-[9999] bg-black/80 flex items-center justify-center p-8 backdrop-blur-sm" onClick={() => setModalImage(null)}>
@@ -1012,11 +1153,10 @@ function ShowsContent({ shows = [] }) {
                         const active = tab === t.id;
                         return (
                             <button key={t.id} onClick={() => { setTab(t.id); setSelectedId(null); }}
-                                className={`px-4 py-1.5 text-sm transition-all border-2 ${
-                                    active
+                                className={`px-4 py-1.5 text-sm transition-all border-2 ${active
                                         ? 'bg-[#333] border-t-black border-l-black border-r-white border-b-white text-white'
                                         : 'bg-[#555] border-t-white border-l-white border-r-black border-b-black text-white hover:bg-[#666]'
-                                }`}
+                                    }`}
                             >
                                 {t.label}
                             </button>
@@ -1029,12 +1169,11 @@ function ShowsContent({ shows = [] }) {
                     {filtered.length === 0 ? (
                         <div className="col-span-2 text-gray-500 italic text-center mt-10">No shows found.</div>
                     ) : filtered.map((show, idx) => (
-                        <div 
-                            key={show.id} 
+                        <div
+                            key={show.id}
                             onClick={() => setSelectedId(show.id)}
-                            className={`flex flex-col p-2.5 border rounded-lg cursor-pointer transition-colors ${
-                                selected?.id === show.id ? 'border-[#555] bg-[#111]' : 'border-[#222] bg-transparent hover:border-[#444]'
-                            }`}
+                            className={`flex flex-col p-2.5 border rounded-lg cursor-pointer transition-colors ${selected?.id === show.id ? 'border-[#555] bg-[#111]' : 'border-[#222] bg-transparent hover:border-[#444]'
+                                }`}
                         >
                             <h3 className="font-bold text-[13px] mb-2">{show.title}</h3>
                             <div className="aspect-[3/4] w-full bg-black overflow-hidden rounded border border-[#111]">
@@ -1059,7 +1198,7 @@ function ShowsContent({ shows = [] }) {
                         {selected.description && (
                             <p className="text-[13px] text-[#e0e0e0] leading-relaxed mb-6 whitespace-pre-wrap">{selected.description}</p>
                         )}
-                        
+
                         {/* Main Poster in Details */}
                         <div className="w-full max-w-[280px] mx-auto bg-[#111] mb-6 shadow-2xl relative group cursor-pointer" onClick={() => selected.main_image && setModalImage(selected.main_image)}>
                             {selected.main_image ? (
@@ -1077,7 +1216,7 @@ function ShowsContent({ shows = [] }) {
                         {/* Mini Posters */}
                         <div className="flex justify-center gap-4 mt-6">
                             {[selected.poster_1, selected.poster_2, selected.poster_3].filter(Boolean).map((p, i) => (
-                                <img key={i} src={p} alt={`Poster ${i+1}`} onClick={() => setModalImage(p)} className="w-20 h-28 object-cover rounded-sm border border-[#444] shadow-md hover:scale-105 hover:border-white transition-all cursor-pointer" />
+                                <img key={i} src={p} alt={`Poster ${i + 1}`} onClick={() => setModalImage(p)} className="w-20 h-28 object-cover rounded-sm border border-[#444] shadow-md hover:scale-105 hover:border-white transition-all cursor-pointer" />
                             ))}
                         </div>
                     </>
@@ -1088,7 +1227,8 @@ function ShowsContent({ shows = [] }) {
                 )}
             </div>
 
-            <style dangerouslySetInnerHTML={{__html: `
+            <style dangerouslySetInnerHTML={{
+                __html: `
                 .custom-scrollbar::-webkit-scrollbar {
                     width: 14px;
                 }
@@ -1114,9 +1254,9 @@ function ShowsContent({ shows = [] }) {
 function BioContent() {
     return (
         <div className="w-full h-full bg-white flex flex-col">
-            <iframe 
-                src="https://redacted.bio/sxena" 
-                title="Bio" 
+            <iframe
+                src="https://redacted.bio/sxena"
+                title="Bio"
                 className="w-full h-full border-none"
                 sandbox="allow-scripts allow-same-origin allow-popups allow-forms"
             />
@@ -1190,7 +1330,7 @@ function Desktop({ chatMessages, projects = [], videos = [], wallpaperFolders = 
     };
 
     const closeWindow = (id) => setOpenWindows((prev) => prev.filter((w) => w.id !== id));
-    
+
     // activeWindowId is now moved above focusWindow
 
     const handleTaskbarClick = (id) => {
@@ -1222,7 +1362,7 @@ function Desktop({ chatMessages, projects = [], videos = [], wallpaperFolders = 
             className="h-screen bg-[#008080] font-sans select-none overflow-hidden flex flex-col relative"
             style={{
                 fontFamily: 'Tahoma, "MS Sans Serif", sans-serif',
-                backgroundImage: isVideoWallpaper ? 'none' : (wallpaper ? `url('${wallpaper}')` : "url('/images/osaka.png')"),
+                backgroundImage: isVideoWallpaper ? 'none' : (wallpaper ? `url('${wallpaper}')` : "url('https://github.com/Bimakanz/PersonalWeb/releases/download/assets/osaka.png')"),
                 backgroundSize: 'cover',
                 backgroundPosition: 'center',
                 backgroundRepeat: 'no-repeat'
@@ -1330,33 +1470,35 @@ function Desktop({ chatMessages, projects = [], videos = [], wallpaperFolders = 
                 <div className="flex gap-1 h-full py-1">
                     <button
                         onClick={() => setIsStartMenuOpen(!isStartMenuOpen)}
-                        className={`flex items-center gap-1 px-1.5 h-full bg-[#c0c0c0] border-2 font-bold text-black text-sm outline-none ${
-                            isStartMenuOpen
+                        className={`flex items-center gap-1 px-1.5 h-full bg-[#c0c0c0] border-2 font-bold text-black text-sm outline-none ${isStartMenuOpen
                                 ? 'border-t-[#808080] border-l-[#808080] border-r-white border-b-white shadow-none bg-[#dfdfdf]'
                                 : 'border-t-white border-l-white border-r-[#808080] border-b-[#808080] shadow-[1px_1px_0_#000] active:border-t-[#808080] active:border-l-[#808080] active:border-r-white active:border-b-white active:shadow-none'
-                        }`}
+                            }`}
                     >
                         <img src="https://win98icons.alexmeub.com/icons/png/windows_slanted-1.png" alt="Start" className="w-4 h-4" />
                         Start
                     </button>
-                    
+
                     <div className="h-full border-l-2 border-l-[#808080] border-r-2 border-r-white mx-1"></div>
 
                     {openWindows.map(w => {
                         const isActive = activeWindowId === w.id && !w.minimized;
                         return (
-                        <button 
-                            key={w.id} 
-                            onClick={() => handleTaskbarClick(w.id)}
-                            className={`flex items-center gap-1 px-2 h-full bg-[#c0c0c0] font-bold text-black text-xs truncate max-w-[120px] focus:outline-none ${!isActive ? 'border-t-2 border-l-2 border-t-white border-l-white border-r-2 border-b-2 border-r-[#808080] border-b-[#808080] shadow-[1px_1px_0_#000]' : 'border-t-2 border-l-2 border-t-[#808080] border-l-[#808080] border-r-2 border-b-2 border-r-white border-b-white shadow-[1px_1px_0_#000_inset]'}`}
-                        >
-                            <img src={getTaskbarIcon(w.id)} alt="Active" className="w-4 h-4 object-contain" style={{ imageRendering: 'pixelated' }} />
-                            <span className="font-bold text-black text-xs truncate max-w-[120px]">{w.title}</span>
-                        </button>
-                    )})}
+                            <button
+                                key={w.id}
+                                onClick={() => handleTaskbarClick(w.id)}
+                                className={`flex items-center gap-1 px-2 h-full bg-[#c0c0c0] font-bold text-black text-xs truncate max-w-[120px] focus:outline-none ${!isActive ? 'border-t-2 border-l-2 border-t-white border-l-white border-r-2 border-b-2 border-r-[#808080] border-b-[#808080] shadow-[1px_1px_0_#000]' : 'border-t-2 border-l-2 border-t-[#808080] border-l-[#808080] border-r-2 border-b-2 border-r-white border-b-white shadow-[1px_1px_0_#000_inset]'}`}
+                            >
+                                <img src={getTaskbarIcon(w.id)} alt="Active" className="w-4 h-4 object-contain" style={{ imageRendering: 'pixelated' }} />
+                                <span className="font-bold text-black text-xs truncate max-w-[120px]">{w.title}</span>
+                            </button>
+                        )
+                    })}
                 </div>
-                
+
                 <div className="flex items-center gap-2 h-full py-1">
+                    {/* Spotify Widget */}
+                    <SpotifyWidget />
                     {/* Clock Tray */}
                     <div className="h-full px-2 flex items-center gap-1 bg-[#c0c0c0] border-t-2 border-l-2 border-t-[#808080] border-l-[#808080] border-r-2 border-b-2 border-r-white border-b-white shadow-[1px_1px_0_#000_inset]">
                         <img src="https://win98icons.alexmeub.com/icons/png/loudspeaker_rays-0.png" alt="Sound" className="w-3 h-3" style={{ imageRendering: 'pixelated' }} />
@@ -1372,7 +1514,7 @@ function Windows95Loading({ onComplete }) {
     useEffect(() => {
         const t = setTimeout(() => {
             onComplete();
-        }, 2000); 
+        }, 2000);
         return () => clearTimeout(t);
     }, [onComplete]);
 
@@ -1402,9 +1544,9 @@ function Windows95Loading({ onComplete }) {
 
                 {/* Highly authentic Loading Bar */}
                 <div className="w-56 md:w-72 h-5 md:h-6 p-[2px] md:p-[3px] relative overflow-hidden bg-black flex gap-1 shadow-[1px_1px_0_rgba(255,255,255,0.2)]"
-                     style={{ border: '2px solid', borderTopColor: '#404040', borderLeftColor: '#404040', borderRightColor: '#ffffff', borderBottomColor: '#ffffff' }}
+                    style={{ border: '2px solid', borderTopColor: '#404040', borderLeftColor: '#404040', borderRightColor: '#ffffff', borderBottomColor: '#ffffff' }}
                 >
-                    <motion.div 
+                    <motion.div
                         initial={{ left: '-40%' }}
                         animate={{ left: '100%' }}
                         transition={{ repeat: Infinity, duration: 2.5, ease: "linear" }}
@@ -1436,7 +1578,7 @@ function LoginScreen({ onLogin }) {
     // =========================================================================
     const ADMIN_AVATAR = "https://i.pinimg.com/originals/81/1d/25/811d255ce4eed0428b0b52b8ccb46c6f.gif";
     const GUEST_AVATAR = "https://i.pinimg.com/originals/c8/56/4a/c8564a53ab234f0ff5a4f6f5f92f9650.gif";
-    
+
     const [bgData, setBgData] = useState(null);
 
     useEffect(() => {
@@ -1473,13 +1615,13 @@ function LoginScreen({ onLogin }) {
 
     return (
         <div className="min-h-screen flex flex-col items-center justify-center relative select-none overflow-hidden"
-             style={{
-                 background: 'radial-gradient(circle at 50% 100%, #1a365d 0%, #000000 70%)',
-             }}
+            style={{
+                background: 'radial-gradient(circle at 50% 100%, #1a365d 0%, #000000 70%)',
+            }}
         >
             {/* Background Image */}
             {bgData ? (
-                <div 
+                <div
                     className="absolute inset-0 w-full h-full opacity-60"
                     style={{
                         backgroundImage: `url(${bgData.url})`,
@@ -1526,10 +1668,10 @@ function LoginScreen({ onLogin }) {
 
                 {/* 2. TAMPILAN PASSWORD INPUT (Jika Admin dipilih) */}
                 {selectedUser === 'admin' && (
-                    <motion.form 
-                        initial={{ opacity: 0, scale: 0.9 }} 
-                        animate={{ opacity: 1, scale: 1 }} 
-                        onSubmit={handleAdminLogin} 
+                    <motion.form
+                        initial={{ opacity: 0, scale: 0.9 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        onSubmit={handleAdminLogin}
                         className="flex flex-col items-center"
                     >
                         <div className="w-28 h-28 rounded-xl border-[3px] border-white/40 mb-3 shadow-[0_0_30px_rgba(255,255,255,0.3)] bg-gray-800 overflow-hidden">
@@ -1544,17 +1686,17 @@ function LoginScreen({ onLogin }) {
                         {/* Password Field */}
                         <div className="flex flex-col items-center gap-1 mb-4">
                             <div className="flex items-center gap-2">
-                                <input 
-                                    type="password" 
-                                    placeholder="Password" 
+                                <input
+                                    type="password"
+                                    placeholder="Password"
                                     value={data.password}
                                     onChange={(e) => setData('password', e.target.value)}
                                     className="bg-[#2d2d2d] border border-[#555] text-white px-3 py-1.5 rounded-md outline-none focus:border-white focus:ring-1 focus:ring-white w-48 font-sans shadow-inner placeholder-gray-400 text-sm"
                                     autoFocus
                                 />
-                                <button 
-                                    type="submit" 
-                                    disabled={processing} 
+                                <button
+                                    type="submit"
+                                    disabled={processing}
                                     className="bg-[#444] hover:bg-[#555] border border-[#666] text-white px-3 py-1.5 rounded-md flex items-center justify-center transition-colors shadow-md disabled:opacity-50"
                                 >
                                     →
@@ -1566,9 +1708,9 @@ function LoginScreen({ onLogin }) {
                         </div>
 
                         {/* Switch User Button */}
-                        <button 
-                            type="button" 
-                            onClick={() => setSelectedUser(null)} 
+                        <button
+                            type="button"
+                            onClick={() => setSelectedUser(null)}
                             className="text-gray-300 hover:text-white border border-gray-500 hover:border-gray-300 bg-black/40 hover:bg-black/60 px-5 py-1.5 rounded font-sans text-sm transition-all shadow-[0_2px_5px_rgba(0,0,0,0.5)]"
                         >
                             Switch User
@@ -1587,22 +1729,22 @@ export default function Home({ projects, chatMessages = [], videos = [], wallpap
     useEffect(() => {
         const chars = '!<>-_\\\\/[]{}—=+*^?#_abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
         let timeoutId;
-        
+
         const glitch = () => {
             const randomChar = chars[Math.floor(Math.random() * chars.length)];
             setTitleText(`S${randomChar}na`);
-            
+
             setTimeout(() => {
                 setTitleText('Sxna');
             }, Math.random() * 100 + 50);
 
             // Random delay between 0.5s and 3.5s
-            let nextGlitch = Math.random() * 3000 + 500; 
+            let nextGlitch = Math.random() * 3000 + 500;
             if (Math.random() > 0.7) {
                 // 30% chance to do a quick double glitch
                 nextGlitch = 150;
             }
-            
+
             timeoutId = setTimeout(glitch, nextGlitch);
         };
 
@@ -1636,14 +1778,14 @@ export default function Home({ projects, chatMessages = [], videos = [], wallpap
                     )}
                     {phase === 'desktop' && (
                         <motion.div key="desktop" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 1.2 }}>
-                                <Desktop
-                                    projects={projects}
-                                    chatMessages={chatMessages}
-                                    videos={videos}
-                                    wallpaperFolders={wallpaperFolders}
-                                    shows={shows}
-                                    onShutdown={() => setPhase('bios')}
-                                />
+                            <Desktop
+                                projects={projects}
+                                chatMessages={chatMessages}
+                                videos={videos}
+                                wallpaperFolders={wallpaperFolders}
+                                shows={shows}
+                                onShutdown={() => setPhase('bios')}
+                            />
                         </motion.div>
                     )}
                 </AnimatePresence>
