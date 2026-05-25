@@ -501,6 +501,34 @@ function MessageBoardContent({ initialMessages = [] }) {
     };
 
     useEffect(() => {
+        const scrollToBottom = () => {
+            if (chatContainerRef.current) {
+                chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
+            }
+        };
+        scrollToBottom();
+        const timer = setTimeout(scrollToBottom, 50);
+        const timer2 = setTimeout(scrollToBottom, 150);
+        return () => {
+            clearTimeout(timer);
+            clearTimeout(timer2);
+        };
+    }, []);
+
+    useEffect(() => {
+        if (joined) {
+            const scrollToBottom = () => {
+                if (chatContainerRef.current) {
+                    chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
+                }
+            };
+            scrollToBottom();
+            const timer = setTimeout(scrollToBottom, 100);
+            return () => clearTimeout(timer);
+        }
+    }, [joined]);
+
+    useEffect(() => {
         if (!joined) return;
 
         const poll = async () => {
@@ -766,24 +794,7 @@ function ContactContent() {
                         </svg>
                     </a>
 
-                    {/* Spotify */}
-                    <a href="https://open.spotify.com/user/kfuqct9yrhtlfrfrsplci965u?si=1709de267e064c83" target="_blank" rel="noreferrer"
-                        style={{
-                            display: 'flex', alignItems: 'center', justifyContent: 'center',
-                            width: 36, height: 36,
-                            background: '#1ED760',
-                            border: '2px solid',
-                            borderColor: '#dfdfdf #808080 #808080 #dfdfdf',
-                            boxShadow: '1px 1px 0 #000',
-                            cursor: 'pointer',
-                            flexShrink: 0
-                        }}
-                        title="Spotify"
-                    >
-                        <svg viewBox="0 0 24 24" fill="white" width="22" height="22" style={{ imageRendering: 'pixelated' }}>
-                            <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.521 17.34c-.24.394-.752.515-1.147.275-3.14-1.92-7.09-2.355-11.751-1.29-.462.106-.91-.184-1.016-.645-.105-.46.184-.91.644-1.015 5.106-1.166 9.467-.674 12.996 1.482.394.24.515.753.274 1.148zm1.567-3.486c-.302.489-.933.64-1.423.338-3.585-2.203-9.06-2.825-13.064-1.545-.55.176-1.134-.127-1.31-.678-.176-.55.127-1.134.678-1.31 4.582-1.464 10.638-.775 14.78 1.77.49.301.64 1.002.339 1.425zm.14-3.643C15.013 7.697 8.736 7.5 5.088 8.608c-.66.202-1.348-.17-1.549-.83-.201-.66.17-1.348.83-1.55 4.19-1.272 11.138-1.042 16.038 1.865.592.35 1.127 1.114.777 1.706-.35.593-1.115.776-1.706.412z" />
-                        </svg>
-                    </a>
+
                 </div>
             </div>
         </div>
@@ -905,103 +916,6 @@ function VideoPlayerContent({ videos = [] }) {
                 )}
                 <div className="absolute bottom-1 right-2 text-white/30 text-[10px] font-mono pointer-events-none z-20 select-none">{current?.title}</div>
             </div>
-        </div>
-    );
-}
-
-function SpotifyWidget() {
-    const [spotifyData, setSpotifyData] = useState(null);
-    const [open, setOpen] = useState(false);
-
-    useEffect(() => {
-        const fetchSpotify = async () => {
-            try {
-                const res = await fetch('/api/spotify');
-                if (!res.ok) return;
-                const json = await res.json();
-                if (json.status !== 'not_configured') setSpotifyData(json);
-            } catch (e) {}
-        };
-        fetchSpotify();
-        const interval = setInterval(fetchSpotify, 30000);
-        return () => clearInterval(interval);
-    }, []);
-
-    if (!spotifyData || spotifyData.status === 'not_configured') return null;
-
-    const isPlaying = spotifyData.status === 'playing';
-    const topTrack = isPlaying ? spotifyData : (spotifyData.tracks?.[0] ?? null);
-    if (!topTrack) return null;
-
-    return (
-        <div className="relative h-full flex items-center">
-            <button
-                onClick={() => setOpen(v => !v)}
-                title={`${isPlaying ? '🎵 Now Playing' : '🕐 Last Played'}: ${topTrack.track} — ${topTrack.artist}`}
-                className="h-full px-2 flex items-center gap-1.5 bg-[#c0c0c0] border-t-2 border-l-2 border-t-[#808080] border-l-[#808080] border-r-2 border-b-2 border-r-white border-b-white shadow-[1px_1px_0_#000_inset]"
-            >
-                {topTrack.cover
-                    ? <img src={topTrack.cover} alt="album" className="w-4 h-4 object-cover" />
-                    : <span className="text-xs">🎵</span>
-                }
-                <span className="text-[10px] font-bold text-black max-w-[80px] truncate hidden md:block">
-                    {topTrack.track}
-                </span>
-            </button>
-
-            {open && (
-                <div className="absolute bottom-full right-0 mb-1 w-64 bg-[#c0c0c0] border-t-2 border-l-2 border-t-white border-l-white border-r-2 border-b-2 border-r-[#808080] border-b-[#808080] shadow-[2px_2px_0_#000] z-[300]">
-                    {/* Title bar */}
-                    <div className="bg-[#000080] text-white text-[11px] font-bold px-2 py-0.5 flex justify-between items-center">
-                        <span>{isPlaying ? '♫ Now Playing' : '♪ Recently Played'}</span>
-                        <button onClick={() => setOpen(false)} className="w-4 h-4 bg-[#c0c0c0] text-black text-xs font-bold flex items-center justify-center border-t border-l border-t-white border-l-white border-r border-b border-r-[#808080] border-b-[#808080] leading-none">×</button>
-                    </div>
-
-                    {isPlaying ? (
-                        <div className="p-2 flex gap-2 items-start">
-                            {spotifyData.cover && (
-                                <img src={spotifyData.cover} alt="album" className="w-12 h-12 object-cover border border-[#808080] shrink-0" />
-                            )}
-                            <div className="flex-1 min-w-0">
-                                <div className="text-[11px] font-bold truncate">{spotifyData.track}</div>
-                                <div className="text-[10px] text-gray-600 truncate">{spotifyData.artist}</div>
-                                <div className="text-[10px] text-gray-500 truncate italic">{spotifyData.album}</div>
-                                {spotifyData.duration > 0 && (
-                                    <div className="mt-1.5 w-full h-1.5 bg-[#808080] border border-[#606060]">
-                                        <div
-                                            className="h-full bg-[#000080]"
-                                            style={{ width: `${Math.min(100, (spotifyData.progress / spotifyData.duration) * 100)}%` }}
-                                        />
-                                    </div>
-                                )}
-                                {spotifyData.url && (
-                                    <a href={spotifyData.url} target="_blank" rel="noreferrer" className="text-[10px] text-[#000080] underline mt-1 block">
-                                        Open in Spotify →
-                                    </a>
-                                )}
-                            </div>
-                        </div>
-                    ) : (
-                        <div className="py-1">
-                            {spotifyData.tracks?.map((t, i) => (
-                                <a
-                                    key={i}
-                                    href={t.url}
-                                    target="_blank"
-                                    rel="noreferrer"
-                                    className="flex items-center gap-2 px-2 py-1 hover:bg-[#000080] hover:text-white group"
-                                >
-                                    {t.cover && <img src={t.cover} alt="" className="w-6 h-6 object-cover shrink-0" />}
-                                    <div className="flex-1 min-w-0">
-                                        <div className="text-[10px] font-bold truncate">{t.track}</div>
-                                        <div className="text-[9px] text-gray-500 group-hover:text-gray-300 truncate">{t.artist}</div>
-                                    </div>
-                                </a>
-                            ))}
-                        </div>
-                    )}
-                </div>
-            )}
         </div>
     );
 }
@@ -1497,8 +1411,6 @@ function Desktop({ chatMessages, projects = [], videos = [], wallpaperFolders = 
                 </div>
 
                 <div className="flex items-center gap-2 h-full py-1">
-                    {/* Spotify Widget */}
-                    <SpotifyWidget />
                     {/* Clock Tray */}
                     <div className="h-full px-2 flex items-center gap-1 bg-[#c0c0c0] border-t-2 border-l-2 border-t-[#808080] border-l-[#808080] border-r-2 border-b-2 border-r-white border-b-white shadow-[1px_1px_0_#000_inset]">
                         <img src="https://win98icons.alexmeub.com/icons/png/loudspeaker_rays-0.png" alt="Sound" className="w-3 h-3" style={{ imageRendering: 'pixelated' }} />

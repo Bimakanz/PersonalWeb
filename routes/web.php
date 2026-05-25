@@ -12,12 +12,6 @@ Route::get('/', [PublicController::class, 'index'])->name('home');
 Route::post('/contact', [PublicController::class, 'storeMessage'])->name('contact.store');
 Route::get('/api/messages', [PublicController::class, 'getMessages'])->name('api.messages');
 
-// Spotify
-Route::get('/spotify/auth', [\App\Http\Controllers\SpotifyController::class, 'auth'])->name('spotify.auth');
-Route::get('/spotify/callback', [\App\Http\Controllers\SpotifyController::class, 'callback'])->name('spotify.callback');
-Route::get('/spotify/exchange', [\App\Http\Controllers\SpotifyController::class, 'exchangeForm'])->name('spotify.exchange');
-Route::get('/api/spotify', [\App\Http\Controllers\SpotifyController::class, 'nowPlaying'])->name('spotify.now');
-
 Route::middleware(['auth', 'verified'])->prefix('dashboard')->group(function () {
     Route::get('/', function () {
         $projectsCount = \App\Models\Project::count();
