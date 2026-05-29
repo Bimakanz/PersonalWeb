@@ -57,7 +57,8 @@ require __DIR__.'/auth.php';
 
 // Route to run database migrations securely on Vercel
 Route::get('/run-migrations', function () {
-    if (request('token') !== env('APP_KEY')) {
+    $token = str_replace(' ', '+', request('token'));
+    if ($token !== env('APP_KEY')) {
         return response('Unauthorized token.', 403);
     }
     try {
