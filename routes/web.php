@@ -54,3 +54,17 @@ Route::middleware('auth')->group(function () {
 });
 
 require __DIR__.'/auth.php';
+
+// Route to run database migrations securely on Vercel
+Route::get('/run-migrations', function () {
+    if (request('token') !== env('APP_KEY')) {
+        return response('Unauthorized token.', 403);
+    }
+    try {
+        \Illuminate\Support\Facades\Artisan::call('migrate', ['--force' => true]);
+        return 'Migrations run successfully!<br><pre>' . \Illuminate\Support\Facades\Artisan::output() . '</pre>';
+    } catch (\Exception $e) {
+        return 'Migration error: ' . $e->getMessage();
+    }
+});
+
