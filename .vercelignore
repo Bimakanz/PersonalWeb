@@ -1,0 +1,11 @@
+/vendor
+/node_modules
+/storage
+/tests
+.env
+.git
+.github
+.editorconfig
+.styleci.yml
+phpunit.xml
+docker-compose.yml
